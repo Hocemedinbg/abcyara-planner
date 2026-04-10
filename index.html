@@ -3,98 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abcyara - Social Media Hub</title>
+    <title>Abcyara Hub - Calendrier</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .social-checkbox, .qa-checkbox { display: none; }
-        .social-label {
-            cursor: pointer; transition: all 0.2s; opacity: 0.3; filter: grayscale(100%);
-        }
-        .social-checkbox:checked + .social-label {
-            opacity: 1; filter: grayscale(0%); transform: scale(1.1);
-        }
-        .social-label:hover { opacity: 0.7; }
+        .social-checkbox { display: none; }
+        .social-label { cursor: pointer; transition: all 0.2s; opacity: 0.2; filter: grayscale(100%); }
+        .social-checkbox:checked + .social-label { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
+        .yt-icon { color: #FF0000; } .tt-icon { color: #000000; } .ig-icon { color: #E1306C; } .fb-icon { color: #1877F2; } .pin-icon { color: #E60023; }
         
-        .qa-label { cursor: pointer; transition: all 0.2s; }
-        .qa-checkbox:checked + .qa-label { text-decoration: line-through; color: #9CA3AF; }
-        
-        .yt-icon { color: #FF0000; }
-        .tt-icon { color: #000000; }
-        .ig-icon { color: #E1306C; }
-        .fb-icon { color: #1877F2; }
-        .pin-icon { color: #E60023; }
+        /* Mobile scroll hide */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Scrollbar custom pour le tableau */
-        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background-color: #CBD5E1; border-radius: 10px; }
+        /* Calendar Grid */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: #e5e7eb; border: 1px solid #e5e7eb; }
+        .calendar-day { background-color: white; min-height: 100px; padding: 0.5rem; transition: background 0.2s; }
+        .calendar-day:hover { background-color: #f9fafb; }
+        .today { background-color: #eff6ff !important; font-weight: bold; }
+        
+        @media (max-width: 768px) {
+            .calendar-day { min-height: 70px; font-size: 0.8rem; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; position: fixed; height: 100%; z-index: 50; }
+            .sidebar.open { transform: translateX(0); }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+<body class="bg-gray-100 text-gray-800 font-sans h-screen flex flex-col md:flex-row overflow-hidden">
 
-    <aside class="w-72 bg-white border-r border-gray-200 flex flex-col h-full shadow-lg z-10 shrink-0">
-        <div class="p-6 border-b border-gray-100">
-            <h1 class="text-2xl font-bold text-indigo-600 flex items-center gap-2">
-                <i class="fa-solid fa-rocket"></i> Abcyara Hub
-            </h1>
-            <p class="text-xs text-gray-500 mt-1">Édition Contenu Éducatif Enfant</p>
-        </div>
+    <button onclick="toggleSidebar()" class="md:hidden fixed bottom-4 right-4 bg-indigo-600 text-white p-4 rounded-full shadow-2xl z-50">
+        <i class="fa-solid fa-bars"></i>
+    </button>
 
-        <div class="p-6 flex-1 overflow-y-auto custom-scroll">
-            <h2 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-4">Accès Studios</h2>
-            <div class="space-y-4" id="studio-links-container">
-                </div>
-            <button onclick="saveLinks()" class="mt-4 w-full bg-indigo-50 text-indigo-600 border border-indigo-200 py-2 rounded-md hover:bg-indigo-100 transition text-sm font-medium">
-                Sauvegarder les liens
-            </button>
-        </div>
-
-        <div class="p-6 border-t border-gray-200 bg-gray-50">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">H</div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Houcemedin</p>
-                    <div class="flex items-center gap-1 text-xs text-green-600 font-medium mt-0.5">
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span> Workflow n8n Actif
-                    </div>
-                </div>
+    <aside id="sidebar" class="sidebar w-72 bg-white border-r border-gray-200 flex flex-col shrink-0">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-indigo-600 italic">Abcyara Hub</h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Manager</p>
             </div>
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="p-4 flex-1 overflow-y-auto no-scrollbar">
+            <h2 class="text-xs font-bold text-gray-500 uppercase mb-4 tracking-widest">Raccourcis Studios</h2>
+            <div id="studio-links-container" class="space-y-3"></div>
+            <button onclick="saveLinks()" class="mt-4 w-full bg-indigo-50 text-indigo-600 text-xs py-2 rounded-lg font-bold border border-indigo-100">SAUVEGARDER</button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-100">
+    <main class="flex-1 flex flex-col overflow-hidden">
         
-        <div class="flex-1 overflow-y-auto p-6 custom-scroll space-y-6">
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 lg:col-span-2">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-bullseye text-red-500"></i> Stratégie de Publication (Heure Tunisie)
-                    </h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-                        <div class="p-3 bg-red-50 rounded-lg border border-red-100">
-                            <strong class="text-red-700 flex items-center gap-1"><i class="fa-brands fa-youtube"></i> YouTube (Pilier)</strong>
-                            <p class="text-xs mt-1 text-gray-600">6–12 min<br>16h–19h</p>
-                        </div>
-                        <div class="p-3 bg-gray-100 rounded-lg border border-gray-200">
-                            <strong class="text-gray-800 flex items-center gap-1"><i class="fa-brands fa-tiktok"></i> TikTok (Extraits)</strong>
-                            <p class="text-xs mt-1 text-gray-600">15–45 sec<br>12h-14h & 19h-22h</p>
-                        </div>
-                        <div class="p-3 bg-pink-50 rounded-lg border border-pink-100">
-                            <strong class="text-pink-700 flex items-center gap-1"><i class="fa-brands fa-instagram"></i> Insta (Reels)</strong>
-                            <p class="text-xs mt-1 text-gray-600">30–60 sec<br>13h-15h & 20h-22h</p>
-                        </div>
-                        <div class="p-3 bg-red-50 rounded-lg border border-red-100">
-                            <strong class="text-red-700 flex items-center gap-1"><i class="fa-brands fa-pinterest"></i> Pinterest</strong>
-                            <p class="text-xs mt-1 text-gray-600">Visuels/15-45s<br>15h-17h</p>
-                        </div>
-                        <div class="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                            <strong class="text-blue-700 flex items-center gap-1"><i class="fa-brands fa-facebook"></i> Facebook</strong>
-                            <p class="text-xs mt-1 text-gray-600">1–3 min<br>14h-16h & 19h-21h</p>
-                        </div>
-                    </div>
+        <header class="bg-white border-b border-gray-200 p-4 md:p-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-4">
+                    <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="current-month-display" class="text-lg font-bold text-gray-800 min-w-[150px] text-center capitalize">Avril 2026</h2>
+                    <button onclick="changeMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
 
+                <div class="flex gap-2">
+                    <input type="text" id="new-video-title" class="text-sm border-gray-200 rounded-lg border p-2 w-full md:w-64 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Titre de la vidéo...">
+                    <input type="date" id="new-video-date" class="text-sm border-gray-200 rounded-lg border p-2">
+                    <button onclick="addVideoTask()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-bold text-sm"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-2 md:p-6 no-scrollbar">
+            <div class="grid grid-cols-7 mb-1 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
+            </div>
+            
+            <div id="calendar-grid" class="calendar-grid rounded-xl overflow-hidden shadow-sm">
+                </div>
+        </div>
+    </main>
+
+    <script>
+        let currentDate = new Date();
+        const platforms = [
+            { id: 'yt', name: 'YouTube', icon: 'fa-brands fa-youtube yt-icon' },
+            { id: 'tt', name: 'TikTok', icon: 'fa-brands fa-tiktok tt-icon' },
+            { id: 'ig', name: 'Instagram', icon: 'fa-brands fa-instagram ig-icon' },
+            { id: 'pin', name: 'Pinterest', icon: 'fa-brands fa-pinterest pin-icon' },
+            { id: 'fb', name: 'Facebook', icon: 'fa-brands fa-facebook fb-icon' }
+        ];
+
+        let appData = JSON.parse(localStorage.getItem('abcyara_v3')) || {
+            links: { yt: "https://studio.youtube.com", tt: "https://www.tiktok.com", ig: "https://business.facebook.com", pin: "https://pinterest.com", fb: "https://facebook.com" },
+            tasks: []
+        };
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+
+        function renderStudioLinks() {
+            const container = document.getElementById('studio-links-container');
+            container.innerHTML = platforms.map(p => `
+                <div class="space-y-1">
+                    <label class="text-[10px] font-bold text-gray-400 flex items-center gap-2"><i class="${p.icon}"></i> ${p.name.toUpperCase()}</label>
+                    <div class="flex gap-1">
+                        <input type="url" id="link-${p.id}" value="${appData.links[p.id]}" class="flex-1 text-xs border border-gray-100 rounded p-1.5 bg-gray-50 outline-none">
+                        <a href="${appData.links[p.id]}" target="_blank" class="p-1.5 bg-gray-100 text-gray-500 rounded hover:bg-gray-200"><i class="fa-solid fa-external-link text-[10px]"></i></a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const monthDisplay = document.getElementById('current-month-display');
+            grid.innerHTML = '';
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            monthDisplay.innerText = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(currentDate);
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+            // Cases vides début
+            for (let i = 0; i < startOffset; i++) {
+                grid.innerHTML += `<div class="calendar-day bg-gray-50/50"></div>`;
+            }
+
+            // Jours du mois
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = new Date().toISOString().split('T')[0] === dateStr;
+                const dayTasks = appData.tasks.filter(t => t.date === dateStr);
+
+                let tasksHtml = dayTasks.map(task => `
+                    <div class="mt-2 p-1 bg-white border border-gray-100 rounded shadow-sm text-[10px]">
+                        <div class="font-bold truncate mb-1 flex justify-between">
+                            <span class="truncate">${task.title}</span>
+                            <button onclick="deleteTask(${task.id})" class="text-gray-300 hover:text-red-500 ml-1"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="flex justify-between">
+                            ${platforms.map(p => `
+                                <input type="checkbox" id="chk-${task.id}-${p.id}" class="social-checkbox" ${task.status[p.id] ? 'checked' : ''} onchange="toggleStatus(${task.id}, '${p.id}', this.checked)">
+                                <label for="chk-${task.id}-${p.id}" class="social-label text-xs"><i class="${p.icon}"></i></label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                grid.innerHTML += `
+                    <div class="calendar-day ${isToday ? 'today' : ''}">
+                        <span class="text-xs font-bold ${isToday ? 'text-indigo-600' : 'text-gray-400'}">${day}</span>
+                        <div class="flex flex-col gap-1">${tasksHtml}</div>
+                    </div>
+                `;
+            }
+        }
+
+        function changeMonth(dir) { currentDate.setMonth(currentDate.getMonth() + dir); renderCalendar(); }
+
+        function addVideoTask() {
+            const title = document.getElementById('new-video-title').value;
+            const date = document.getElementById('new-video-date').value;
+            if (!title || !date) return;
+
+            appData.tasks.push({
+                id: Date.now(), title, date,
+                status: { yt: false, tt: false, ig: false, pin: false, fb: false }
+            });
+            saveData(); renderCalendar();
+            document.getElementById('new-video-title').value = '';
+        }
+
+        function toggleStatus(taskId, platform, checked) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            if(task) task.status[platform] = checked;
+            saveData();
+        }
+
+        function deleteTask(id) { if(confirm("Supprimer ?")) { appData.tasks = appData.tasks.filter(t => t.id !== id); saveData(); renderCalendar(); } }
+        function saveLinks() { platforms.forEach(p => appData.links[p.id] = document.getElementById(`link-${p.id}`).value); saveData(); alert("Enregistré !"); }
+        function saveData() { localStorage.setItem('abcyara_v3', JSON.stringify(appData)); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('new-video-date').valueAsDate = new Date();
+            renderStudioLinks(); renderCalendar();
+        });
+    </script>
+</body>
+</html>
                 <div class="bg-indigo-600 text-white p-5 rounded-xl shadow-sm">
                     <h3 class="font-bold mb-3"><i class="fa-solid fa-rotate text-indigo-300"></i> Écosystème de Recyclage</h3>
                     <ul class="text-sm space-y-2 text-indigo-100">
