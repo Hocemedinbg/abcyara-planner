@@ -3,133 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abcyara Hub - Expert</title>
+    <title>Abcyara Hub - Production & Stratégie</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .social-checkbox { display: none; }
-        .social-label { cursor: pointer; opacity: 0.3; filter: grayscale(100%); transition: 0.2s; }
+        .social-label { cursor: pointer; transition: 0.2s; opacity: 0.2; filter: grayscale(100%); }
         .social-checkbox:checked + .social-label { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
         .yt-icon { color: #FF0000; } .tt-icon { color: #000000; } .ig-icon { color: #E1306C; }
         .fb-icon { color: #1877F2; } .pin-icon { color: #E60023; }
         .custom-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <header class="bg-white border-b border-gray-200 p-4 shadow-sm shrink-0">
-        <div class="flex justify-between items-center mb-3">
-            <h1 class="text-xl font-bold text-indigo-600 flex items-center gap-2">
-                <i class="fa-solid fa-rocket"></i> Abcyara Hub
-            </h1>
+    <header class="bg-white border-b border-gray-200 p-4 shadow-sm sticky top-0 z-30">
+        <div class="flex flex-col gap-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-indigo-600 flex items-center gap-2">
+                    <i class="fa-solid fa-rocket"></i> Abcyara Hub
+                </h1>
+                <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-bold">ÉDITION ÉDUCATIVE</span>
+            </div>
+            
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-3">
+                <h3 class="text-xs font-bold text-blue-800 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-yellow-500 animate-pulse"></i> STRATÉGIE DE PUBLICATION
+                </h3>
+                <div class="grid grid-cols-2 gap-2 text-[10px]">
+                    <div class="bg-white/50 p-2 rounded">
+                        <p class="text-blue-900 font-bold"><i class="fa-solid fa-clock mr-1"></i> Horaires</p>
+                        <p>07:00 (Réveil) / 17:00 (Goûter)</p>
+                    </div>
+                    <div class="bg-white/50 p-2 rounded">
+                        <p class="text-blue-900 font-bold"><i class="fa-solid fa-video mr-1"></i> Longueur</p>
+                        <p>15 à 30 sec (Engagement Max)</p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="overflow-x-auto flex gap-3 pb-2 custom-scroll" id="studio-links-container"></div>
     </header>
 
-    <section class="p-4 bg-white border-b border-gray-200">
-        <div class="flex flex-col gap-2 max-w-4xl mx-auto">
-            <input type="text" id="new-video-title" placeholder="Titre de la vidéo (ex: Les Fruits)..." class="border p-2 rounded-md text-sm outline-none focus:border-indigo-500">
+    <section class="p-4 bg-white border-b border-gray-200 shadow-sm">
+        <div class="flex flex-col gap-3">
+            <input type="text" id="new-video-title" placeholder="Titre (ex: Les Fruits 🍎)" class="border p-3 rounded-lg text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-200 outline-none transition-all">
             <div class="flex gap-2">
-                <input type="date" id="new-video-date" class="border p-2 rounded-md text-sm flex-1 outline-none">
-                <button onclick="addVideoTask()" class="bg-indigo-600 text-white px-6 py-2 rounded-md text-sm font-bold shadow-md active:scale-95 transition">Ajouter</button>
+                <input type="date" id="new-video-date" class="border p-3 rounded-lg text-sm flex-1 bg-gray-50 outline-none">
+                <button onclick="addVideoTask()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg text-sm font-bold shadow-md active:scale-95 transition-transform">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
             </div>
         </div>
     </section>
 
-    <main class="p-4 flex flex-col max-w-6xl mx-auto w-full">
-        <div class="flex justify-between items-center mb-4">
-            <h2 id="month-display" class="font-bold text-gray-700 capitalize text-lg">Mois Année</h2>
-            <div class="flex gap-2">
-                <button onclick="changeMonth(-1)" class="p-2 bg-white border rounded shadow-sm"><i class="fa-solid fa-chevron-left"></i></button>
-                <button onclick="changeMonth(1)" class="p-2 bg-white border rounded shadow-sm"><i class="fa-solid fa-chevron-right"></i></button>
+    <main class="flex-1 p-4 flex flex-col gap-4 overflow-hidden">
+        <div class="flex justify-between items-center px-1">
+            <h2 id="month-display" class="font-black text-gray-700 uppercase tracking-tighter">Mois Année</h2>
+            <div class="flex gap-1">
+                <button onclick="changeMonth(-1)" class="p-2 bg-white border rounded-lg shadow-sm active:bg-gray-100"><i class="fa-solid fa-chevron-left"></i></button>
+                <button onclick="changeMonth(1)" class="p-2 bg-white border rounded-lg shadow-sm active:bg-gray-100"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </div>
 
-        <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-6">
-            <div class="overflow-x-auto custom-scroll">
-                <div class="min-w-[600px]">
-                    <div class="grid grid-cols-7 bg-gray-50 text-[10px] font-bold text-center uppercase py-3 border-b">
-                        <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
-                    </div>
-                    <div id="calendar-grid" class="grid grid-cols-7 text-center bg-white"></div>
+        <div class="flex-1 overflow-auto custom-scroll bg-white rounded-2xl shadow-xl border border-gray-200">
+            <div class="grid grid-cols-7 border-b bg-gray-50/80 backdrop-blur-sm text-[9px] font-black text-center py-3 sticky top-0 z-10">
+                <div class="text-red-400">LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div class="text-indigo-500">SAM</div><div class="text-indigo-500">DIM</div>
+            </div>
+            <div id="calendar-grid" class="grid grid-cols-7">
                 </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            
-            <div class="bg-blue-600 text-white p-5 rounded-xl shadow-lg">
-                <h3 class="font-bold mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb"></i> Assistant Social Media
-                </h3>
-                <ul class="text-xs space-y-2 opacity-90">
-                    <li><i class="fa-solid fa-clock"></i> <strong>Formats :</strong> 15-30s (Éducatif / Enfants).</li>
-                    <li><i class="fa-solid fa-bell"></i> <strong>Horaires :</strong> 07h00 (Réveil) ou 17h00 (Sortie).</li>
-                    <li><i class="fa-solid fa-vial"></i> <strong>Astuce :</strong> Couleurs vives dès la 1ère seconde.</li>
-                </ul>
-            </div>
-
-            <div class="bg-white border border-gray-200 p-5 rounded-xl shadow-md">
-                <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-check text-indigo-500"></i> Routine Hebdomadaire
-                </h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-[10px] text-left">
-                        <thead>
-                            <tr class="text-gray-400 border-b">
-                                <th class="pb-1">JOUR</th>
-                                <th class="pb-1">TYPE</th>
-                                <th class="pb-1">CIBLE</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-600">
-                            <tr class="border-b"><td class="py-1 font-bold">LUN/MER</td><td>Vocabulaire</td><td>YouTube/TT</td></tr>
-                            <tr class="border-b"><td class="py-1 font-bold">MAR/JEU</td><td>Quiz/Interaction</td><td>Insta Stories</td></tr>
-                            <tr class="border-b"><td class="py-1 font-bold">VEN</td><td>Récapitulatif</td><td>Facebook</td></tr>
-                            <tr><td class="py-1 font-bold">SAM/DIM</td><td>Fiches à imprimer</td><td>Pinterest</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="bg-indigo-900 text-white p-5 rounded-xl shadow-lg md:col-span-2">
-                <h3 class="font-bold mb-2 flex items-center gap-2 text-indigo-300">
-                    <i class="fa-solid fa-recycle"></i> Écosystème de Recyclage
-                </h3>
-                <div class="flex flex-wrap gap-4 text-[11px] opacity-90">
-                    <div class="flex items-center gap-2 bg-indigo-800 p-2 rounded-lg border border-indigo-700">
-                        <i class="fa-brands fa-youtube text-red-500 text-lg"></i> <span>Source (Longue)</span>
-                    </div>
-                    <i class="fa-solid fa-arrow-right self-center opacity-40"></i>
-                    <div class="flex items-center gap-2 bg-indigo-800 p-2 rounded-lg border border-indigo-700">
-                        <i class="fa-brands fa-tiktok text-white text-lg"></i> <span>Extraits Courts</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-indigo-800 p-2 rounded-lg border border-indigo-700">
-                        <i class="fa-brands fa-pinterest text-red-400 text-lg"></i> <span>Visuels Mots</span>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
+
+    <nav class="bg-white border-t border-gray-200 p-3 shrink-0 flex gap-2 overflow-x-auto custom-scroll" id="studio-nav">
+        </nav>
 
     <script>
         const platforms = [
             { id: 'yt', name: 'YouTube', icon: 'fa-brands fa-youtube yt-icon', url: "https://studio.youtube.com" },
             { id: 'tt', name: 'TikTok', icon: 'fa-brands fa-tiktok tt-icon', url: "https://www.tiktok.com/creators/creator-portal/" },
-            { id: 'ig', name: 'Instagram', icon: 'fa-brands fa-instagram ig-icon', url: "https://business.facebook.com/creatorstudio/home" },
-            { id: 'fb', name: 'Facebook', icon: 'fa-brands fa-facebook fb-icon', url: "https://business.facebook.com/" },
-            { id: 'pin', name: 'Pinterest', icon: 'fa-brands fa-pinterest pin-icon', url: "https://www.pinterest.com/business/hub/" }
+            { id: 'ig', name: 'Insta', icon: 'fa-brands fa-instagram ig-icon', url: "https://business.facebook.com/creatorstudio/home" },
+            { id: 'fb', name: 'FB', icon: 'fa-brands fa-facebook fb-icon', url: "https://business.facebook.com/" },
+            { id: 'pin', name: 'Pin', icon: 'fa-brands fa-pinterest pin-icon', url: "https://www.pinterest.com/business/hub/" }
         ];
 
-        let appData = JSON.parse(localStorage.getItem('abcyara_v5')) || { tasks: [] };
+        let appData = JSON.parse(localStorage.getItem('abcyara_v6')) || { tasks: [] };
         let currentViewDate = new Date();
 
-        function renderStudioLinks() {
-            const container = document.getElementById('studio-links-container');
-            container.innerHTML = platforms.map(p => `
-                <a href="${p.url}" target="_blank" class="flex-shrink-0 bg-white border border-gray-200 p-2 rounded-lg flex items-center gap-2 text-[10px] font-bold shadow-sm active:bg-gray-50 transition">
-                    <i class="${p.icon} text-sm"></i> ${p.name}
+        function renderStudioNav() {
+            const nav = document.getElementById('studio-nav');
+            nav.innerHTML = platforms.map(p => `
+                <a href="${p.url}" target="_blank" class="flex-shrink-0 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full flex items-center gap-2 text-[10px] font-bold shadow-sm">
+                    <i class="${p.icon}"></i> ${p.name}
                 </a>
             `).join('');
         }
@@ -148,21 +113,19 @@
             const startOffset = firstDay === 0 ? 6 : firstDay - 1;
 
             for (let i = 0; i < startOffset; i++) {
-                grid.innerHTML += `<div class="border-b border-r border-gray-100 min-h-[100px] bg-gray-50/50"></div>`;
+                grid.innerHTML += `<div class="border-b border-r border-gray-50 min-h-[100px] bg-gray-50/30"></div>`;
             }
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const dayTasks = appData.tasks.filter(t => t.date === dateStr);
                 const isToday = new Date().toISOString().split('T')[0] === dateStr;
+                const dayTasks = appData.tasks.filter(t => t.date === dateStr);
                 
                 let tasksHtml = dayTasks.map(task => `
-                    <div class="mt-1 bg-indigo-50 border border-indigo-100 rounded p-1.5 shadow-sm group">
-                        <div class="flex justify-between items-center mb-1">
-                            <div class="text-[9px] font-bold truncate text-indigo-900">${task.title}</div>
-                            <button onclick="deleteTask(${task.id})" class="text-gray-300 hover:text-red-500"><i class="fa-solid fa-xmark text-[8px]"></i></button>
-                        </div>
-                        <div class="flex justify-around">
+                    <div class="mt-1 bg-white border border-indigo-100 shadow-sm rounded-lg p-1 group relative">
+                        <button onclick="deleteTask(${task.id})" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-3 h-3 text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">×</button>
+                        <div class="text-[8px] font-bold text-gray-700 truncate leading-tight mb-1">${task.title}</div>
+                        <div class="flex justify-between px-0.5">
                             ${platforms.map(p => `
                                 <input type="checkbox" id="c-${task.id}-${p.id}" class="social-checkbox" ${task.status[p.id] ? 'checked' : ''} onchange="toggleStatus(${task.id}, '${p.id}', this.checked)">
                                 <label for="c-${task.id}-${p.id}" class="social-label text-[10px]"><i class="${p.icon}"></i></label>
@@ -172,9 +135,9 @@
                 `).join('');
 
                 grid.innerHTML += `
-                    <div class="border-b border-r border-gray-100 min-h-[100px] p-1 flex flex-col ${isToday ? 'bg-yellow-50/50' : ''}">
-                        <span class="text-[10px] ${isToday ? 'text-indigo-600 font-bold' : 'text-gray-400'} self-start mb-1">${day}</span>
-                        ${tasksHtml}
+                    <div class="border-b border-r border-gray-100 min-h-[110px] p-1 flex flex-col bg-white ${isToday ? 'ring-2 ring-inset ring-indigo-500/20' : ''}">
+                        <span class="text-[10px] font-black ${isToday ? 'bg-indigo-600 text-white w-5 h-5 flex items-center justify-center rounded-full' : 'text-gray-300'} mb-1">${day}</span>
+                        <div class="flex-1 overflow-y-auto custom-scroll">${tasksHtml}</div>
                     </div>
                 `;
             }
@@ -182,7 +145,7 @@
 
         function toggleStatus(taskId, platformId, isChecked) {
             const task = appData.tasks.find(t => t.id === taskId);
-            if (task) { task.status[platformId] = isChecked; save(); renderCalendar(); }
+            if (task) { task.status[platformId] = isChecked; save(); }
         }
 
         function addVideoTask() {
@@ -194,7 +157,10 @@
         }
 
         function deleteTask(id) {
-            if(confirm('Supprimer ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); }
+            if(confirm('Supprimer cette vidéo ?')) {
+                appData.tasks = appData.tasks.filter(t => t.id !== id);
+                save(); renderCalendar();
+            }
         }
 
         function changeMonth(dir) {
@@ -202,10 +168,10 @@
             renderCalendar();
         }
 
-        function save() { localStorage.setItem('abcyara_v5', JSON.stringify(appData)); }
+        function save() { localStorage.setItem('abcyara_v6', JSON.stringify(appData)); }
 
         document.getElementById('new-video-date').valueAsDate = new Date();
-        renderStudioLinks();
+        renderStudioNav();
         renderCalendar();
     </script>
 </body>
