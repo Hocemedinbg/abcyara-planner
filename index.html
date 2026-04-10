@@ -3,264 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abcyara Hub - Production & Stratégie</title>
+    <title>Abcyara Hub - Dashboard Stratégique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .social-checkbox { display: none; }
         .social-label { cursor: pointer; transition: 0.2s; opacity: 0.2; filter: grayscale(100%); }
-        .social-checkbox:checked + .social-label { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
+        .social-checkbox:checked + .social-label { opacity: 1; filter: grayscale(0%); transform: scale(1.2); }
         .yt-icon { color: #FF0000; } .tt-icon { color: #000000; } .ig-icon { color: #E1306C; }
         .fb-icon { color: #1877F2; } .pin-icon { color: #E60023; }
-        .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scroll::-webkit-scrollbar { height: 5px; width: 5px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 10px; }
-        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        @media (min-width: 1024px) { .main-grid { grid-template-columns: 400px 1fr; } }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col relative">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
 
-    <div id="edit-modal" class="fixed inset-0 bg-gray-900/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-xl shadow-2xl p-5 w-full max-w-sm">
+    <div id="edit-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm border border-indigo-100">
             <h3 class="font-bold text-lg mb-4 text-indigo-600 flex items-center gap-2">
-                <i class="fa-solid fa-pen-to-square"></i> Modifier la vidéo
+                <i class="fa-solid fa-pen-to-square"></i> Modifier la publication
             </h3>
             <input type="hidden" id="edit-task-id">
-            <div class="mb-3">
-                <label class="block text-xs font-bold text-gray-700 mb-1">Titre de la vidéo</label>
-                <input type="text" id="edit-task-title" class="w-full border p-3 rounded-lg text-sm bg-gray-50 outline-none focus:ring-2 focus:ring-indigo-200">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Titre de la vidéo</label>
+                    <input type="text" id="edit-task-title" class="w-full border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:ring-2 focus:ring-indigo-400 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Date de publication</label>
+                    <input type="date" id="edit-task-date" class="w-full border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:ring-2 focus:ring-indigo-400 outline-none">
+                </div>
             </div>
-            <div class="mb-5">
-                <label class="block text-xs font-bold text-gray-700 mb-1">Date de publication</label>
-                <input type="date" id="edit-task-date" class="w-full border p-3 rounded-lg text-sm bg-gray-50 outline-none focus:ring-2 focus:ring-indigo-200">
-            </div>
-            <div class="flex justify-end gap-2">
-                <button onclick="closeEditModal()" class="px-4 py-2 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">Annuler</button>
-                <button onclick="saveEditTask()" class="px-4 py-2 text-sm font-bold bg-indigo-600 text-white rounded-lg shadow-md active:scale-95 transition-transform">Enregistrer</button>
+            <div class="flex justify-end gap-2 mt-6">
+                <button onclick="closeEditModal()" class="px-4 py-2 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Annuler</button>
+                <button onclick="saveEditTask()" class="px-6 py-2 text-sm font-bold bg-indigo-600 text-white rounded-xl shadow-lg active:scale-95 transition-all">Mettre à jour</button>
             </div>
         </div>
     </div>
 
-    <div id="strategy-modal" class="fixed inset-0 bg-gray-900/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
-            <div class="p-5 border-b border-gray-200 flex justify-between items-center bg-indigo-50 rounded-t-2xl">
-                <h2 class="text-xl font-black text-indigo-800 flex items-center gap-2">
-                    <i class="fa-solid fa-book-open"></i> Guide Stratégique (Tunisie - UTC+1)
-                </h2>
-                <button onclick="closeStrategyModal()" class="text-gray-500 hover:text-red-500 transition-colors text-xl">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            
-            <div class="p-6 overflow-y-auto custom-scroll flex flex-col gap-6">
-                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                    <h3 class="font-bold text-blue-800 mb-3 text-sm uppercase tracking-wider"><i class="fa-solid fa-link"></i> Stratégie de l'Écosystème</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                        <div class="bg-white p-3 rounded shadow-sm border-l-4 border-red-500">
-                            <strong>YouTube</strong><br><span class="text-xs text-gray-600">Contenu principal (long & complet)</span>
-                        </div>
-                        <div class="bg-white p-3 rounded shadow-sm border-l-4 border-black">
-                            <strong>TikTok & Insta</strong><br><span class="text-xs text-gray-600">Mini-clips et extraits attractifs</span>
-                        </div>
-                        <div class="bg-white p-3 rounded shadow-sm border-l-4 border-red-700">
-                            <strong>Pinterest</strong><br><span class="text-xs text-gray-600">Fiches visuelles et vocabulaire</span>
-                        </div>
-                        <div class="bg-white p-3 rounded shadow-sm border-l-4 border-blue-600">
-                            <strong>Facebook</strong><br><span class="text-xs text-gray-600">Relais communautaire (parents)</span>
-                        </div>
-                    </div>
+    <header class="bg-white border-b border-slate-200 p-4 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-[1800px] mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white shadow-indigo-200 shadow-lg">
+                    <i class="fa-solid fa-rocket text-xl"></i>
                 </div>
-
                 <div>
-                    <h3 class="font-bold text-gray-800 mb-3"><i class="fa-solid fa-chart-bar text-indigo-500"></i> Formats et Horaires optimaux</h3>
-                    <div class="overflow-x-auto rounded-lg border border-gray-200">
-                        <table class="min-w-full text-sm text-left text-gray-600">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                                <tr>
-                                    <th class="px-4 py-3">Plateforme</th>
-                                    <th class="px-4 py-3">Longueur</th>
-                                    <th class="px-4 py-3">Horaires (Tunisie)</th>
-                                    <th class="px-4 py-3">Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-red-600"><i class="fa-brands fa-youtube mr-1"></i> YouTube</td>
-                                    <td class="px-4 py-3">6–12 min</td>
-                                    <td class="px-4 py-3 font-semibold">16h–19h</td>
-                                    <td class="px-4 py-3 text-xs">Miniatures colorées, playlists thématiques</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 font-bold text-black"><i class="fa-brands fa-tiktok mr-1"></i> TikTok</td>
-                                    <td class="px-4 py-3">15–45 sec</td>
-                                    <td class="px-4 py-3 font-semibold">12h–14h & 19h–22h</td>
-                                    <td class="px-4 py-3 text-xs">Dynamique, sous-titres, musique</td>
-                                </tr>
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-pink-600"><i class="fa-brands fa-instagram mr-1"></i> Instagram</td>
-                                    <td class="px-4 py-3">30–60 sec</td>
-                                    <td class="px-4 py-3 font-semibold">13h–15h & 20h–22h</td>
-                                    <td class="px-4 py-3 text-xs">Hashtags éducatifs, carrousels</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 font-bold text-red-700"><i class="fa-brands fa-pinterest mr-1"></i> Pinterest</td>
-                                    <td class="px-4 py-3">15–45s ou statique</td>
-                                    <td class="px-4 py-3 font-semibold">15h–17h</td>
-                                    <td class="px-4 py-3 text-xs">Infographies, fiches illustrées</td>
-                                </tr>
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-blue-600"><i class="fa-brands fa-facebook mr-1"></i> Facebook</td>
-                                    <td class="px-4 py-3">1–3 min</td>
-                                    <td class="px-4 py-3 font-semibold">14h–16h & 19h–21h</td>
-                                    <td class="px-4 py-3 text-xs">Groupes, sous-titres auto, lives courts</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="font-bold text-gray-800 mb-3"><i class="fa-solid fa-calendar-week text-indigo-500"></i> Calendrier Hebdomadaire Type</h3>
-                    <div class="overflow-x-auto rounded-lg border border-gray-200">
-                        <table class="min-w-full text-sm text-left text-gray-600">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-                                <tr>
-                                    <th class="px-4 py-3">Jour</th>
-                                    <th class="px-4 py-3"><i class="fa-brands fa-youtube text-red-600"></i> YT</th>
-                                    <th class="px-4 py-3"><i class="fa-brands fa-tiktok text-black"></i> TT</th>
-                                    <th class="px-4 py-3"><i class="fa-brands fa-instagram text-pink-600"></i> IG</th>
-                                    <th class="px-4 py-3"><i class="fa-brands fa-pinterest text-red-700"></i> PIN</th>
-                                    <th class="px-4 py-3"><i class="fa-brands fa-facebook text-blue-600"></i> FB</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 text-xs font-medium">
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Lundi</td>
-                                    <td class="px-4 py-3 text-indigo-600">Vidéo longue (16h)</td>
-                                    <td class="px-4 py-3">Teaser (12h)</td>
-                                    <td class="px-4 py-3">Reel extrait (20h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Mardi</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">2 extraits (12h, 20h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Fiche vocab (15h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                </tr>
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Mercredi</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Mot du jour (13h)</td>
-                                    <td class="px-4 py-3">Infographie (16h)</td>
-                                    <td class="px-4 py-3">Clip court (19h)</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Jeudi</td>
-                                    <td class="px-4 py-3 text-indigo-600">Shorts (17h)</td>
-                                    <td class="px-4 py-3">Mini-clip (19h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Mini-clip (14h)</td>
-                                </tr>
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Vendredi</td>
-                                    <td class="px-4 py-3 text-indigo-600">Vidéo longue (17h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Teaser (20h)</td>
-                                    <td class="px-4 py-3">Fiche vocab (15h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                </tr>
-                                <tr class="bg-gray-50">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Samedi</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Compilation (21h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Infographie (16h)</td>
-                                    <td class="px-4 py-3 text-indigo-600">Live (19h)</td>
-                                </tr>
-                                <tr class="bg-white">
-                                    <td class="px-4 py-3 font-bold text-gray-800">Dimanche</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Vidéo récap (12h)</td>
-                                    <td class="px-4 py-3">Story rappel (21h)</td>
-                                    <td class="px-4 py-3 text-gray-400">—</td>
-                                    <td class="px-4 py-3">Post commu. (20h)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <h1 class="text-xl font-black text-slate-900 leading-none">Abcyara Hub</h1>
+                    <p class="text-[10px] font-bold text-indigo-500 tracking-widest uppercase mt-1">Édition Tunisie • UTC+1</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <header class="bg-white border-b border-gray-200 p-4 shadow-sm sticky top-0 z-30">
-        <div class="flex flex-col gap-3">
-            <div class="flex justify-between items-center">
-                <h1 class="text-xl font-bold text-indigo-600 flex items-center gap-2">
-                    <i class="fa-solid fa-rocket"></i> Abcyara Hub
-                </h1>
-                <div class="flex gap-2 items-center">
-                    <button onclick="openStrategyModal()" class="text-[10px] bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1 rounded-full font-bold shadow-sm transition-colors border border-green-200 flex items-center gap-1">
-                        <i class="fa-solid fa-book"></i> GUIDE
-                    </button>
-                    <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-bold">ÉDITION ÉDUCATIVE</span>
+            <div id="studio-nav" class="hidden md:flex gap-2">
                 </div>
-            </div>
-            
-            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-3">
-                <h3 class="text-xs font-bold text-blue-800 mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb text-yellow-500 animate-pulse"></i> STRATÉGIE TUNISIE (UTC+1)
-                </h3>
-                <div class="grid grid-cols-2 gap-2 text-[10px]">
-                    <div class="bg-white/70 p-2 rounded border border-white">
-                        <p class="text-blue-900 font-bold"><i class="fa-solid fa-clock mr-1"></i> Horaires Clés</p>
-                        <p>12h-14h / 16h-22h</p>
-                    </div>
-                    <div class="bg-white/70 p-2 rounded border border-white">
-                        <p class="text-blue-900 font-bold"><i class="fa-solid fa-video mr-1"></i> Formats</p>
-                        <p>Shorts: 15-60s | Longs: 6-12m</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </header>
 
-    <section class="p-4 bg-white border-b border-gray-200 shadow-sm z-20 relative">
-        <div class="flex flex-col gap-3">
-            <input type="text" id="new-video-title" placeholder="Titre (ex: Les Fruits 🍎)" class="border border-gray-300 p-3 rounded-lg text-sm bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-200 outline-none transition-all shadow-inner">
-            <div class="flex gap-2">
-                <input type="date" id="new-video-date" class="border border-gray-300 p-3 rounded-lg text-sm flex-1 bg-gray-50 outline-none shadow-inner">
-                <button onclick="addVideoTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg text-sm font-bold shadow-md active:scale-95 transition-all">
-                    <i class="fa-solid fa-plus"></i> Ajouter
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <main class="flex-1 p-4 flex flex-col gap-4 overflow-hidden relative z-10">
-        <div class="flex justify-between items-center px-1">
-            <h2 id="month-display" class="font-black text-gray-700 uppercase tracking-tighter text-lg">Mois Année</h2>
-            <div class="flex gap-1">
-                <button onclick="changeMonth(-1)" class="p-2 bg-white border border-gray-300 rounded-lg shadow-sm active:bg-gray-100 hover:bg-gray-50 transition-colors"><i class="fa-solid fa-chevron-left text-gray-600"></i></button>
-                <button onclick="changeMonth(1)" class="p-2 bg-white border border-gray-300 rounded-lg shadow-sm active:bg-gray-100 hover:bg-gray-50 transition-colors"><i class="fa-solid fa-chevron-right text-gray-600"></i></button>
-            </div>
-        </div>
-
-        <div class="flex-1 overflow-auto custom-scroll bg-white rounded-2xl shadow-xl border border-gray-200">
-            <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-100 text-[9px] font-black text-center py-3 sticky top-0 z-10 shadow-sm">
-                <div class="text-red-500">LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div class="text-indigo-600">SAM</div><div class="text-indigo-600">DIM</div>
-            </div>
-            <div id="calendar-grid" class="grid grid-cols-7">
+    <div class="max-w-[1800px] mx-auto p-4 main-grid grid gap-6">
+        
+        <aside class="space-y-6">
+            
+            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
+                <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                    <i class="fa-solid fa-plus-circle text-indigo-500"></i> Planifier une vidéo
+                </h2>
+                <div class="flex flex-col gap-3">
+                    <input type="text" id="new-video-title" placeholder="Titre (ex: Les Couleurs 🎨)" class="border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 outline-none transition-all">
+                    <div class="flex gap-2">
+                        <input type="date" id="new-video-date" class="border border-slate-200 p-3 rounded-xl text-sm flex-1 bg-slate-50 outline-none">
+                        <button onclick="addVideoTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-lg shadow-indigo-100 active:scale-95 transition-all">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
                 </div>
-        </div>
-    </main>
+            </section>
 
-    <nav class="bg-white border-t border-gray-200 p-3 shrink-0 flex gap-3 overflow-x-auto custom-scroll z-20 relative" id="studio-nav">
-        </nav>
+            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 overflow-hidden">
+                <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                    <i class="fa-solid fa-chart-line text-green-500"></i> Recommandations
+                </h2>
+                <div class="space-y-3">
+                    <div class="p-3 rounded-2xl bg-red-50 border border-red-100 flex justify-between items-center">
+                        <span class="text-xs font-bold text-red-700"><i class="fa-brands fa-youtube mr-2"></i>YouTube</span>
+                        <span class="text-[10px] font-black bg-red-200 text-red-800 px-2 py-1 rounded-lg italic">16h - 19h</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-slate-100 border border-slate-200 flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-800"><i class="fa-brands fa-tiktok mr-2"></i>TikTok</span>
+                        <span class="text-[10px] font-black bg-slate-200 text-slate-800 px-2 py-1 rounded-lg italic">12h-14h / 19h-22h</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-pink-50 border border-pink-100 flex justify-between items-center">
+                        <span class="text-xs font-bold text-pink-700"><i class="fa-brands fa-instagram mr-2"></i>Instagram</span>
+                        <span class="text-[10px] font-black bg-pink-200 text-pink-800 px-2 py-1 rounded-lg italic">13h-15h / 20h-22h</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-orange-50 border border-orange-100 flex justify-between items-center">
+                        <span class="text-xs font-bold text-orange-700"><i class="fa-brands fa-pinterest mr-2"></i>Pinterest</span>
+                        <span class="text-[10px] font-black bg-orange-200 text-orange-800 px-2 py-1 rounded-lg italic">15h - 17h</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-blue-50 border border-blue-100 flex justify-between items-center">
+                        <span class="text-xs font-bold text-blue-700"><i class="fa-brands fa-facebook mr-2"></i>Facebook</span>
+                        <span class="text-[10px] font-black bg-blue-200 text-blue-800 px-2 py-1 rounded-lg italic">14h-16h / 19h-21h</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-indigo-900 rounded-3xl p-5 shadow-xl text-white">
+                <h2 class="text-sm font-black mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                    <i class="fa-solid fa-calendar-check text-indigo-300"></i> Routine Hebdomadaire
+                </h2>
+                <div class="space-y-2 text-[10px] opacity-90">
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>LUN</strong> <span>Vidéo YouTube (16h)</span></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>MAR</strong> <span>2 TikTok (12h/20h) + Pin</span></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>MER</strong> <span>Reel (13h) + Clip FB</span></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>JEU</strong> <span>YouTube Shorts (17h)</span></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>VEN</strong> <span>Vidéo YouTube (17h)</span></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>SAM</strong> <span>Live Facebook (19h)</span></div>
+                    <div class="flex justify-between"><strong>DIM</strong> <span>Récap TikTok (12h)</span></div>
+                </div>
+            </section>
+
+        </aside>
+
+        <section class="flex flex-col gap-4">
+            <div class="flex justify-between items-center bg-white p-4 rounded-3xl shadow-sm border border-slate-200">
+                <h2 id="month-display" class="font-black text-slate-800 uppercase tracking-tighter text-xl">---</h2>
+                <div class="flex gap-2">
+                    <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden flex-1 flex flex-col min-h-[600px]">
+                <div class="grid grid-cols-7 bg-slate-50 border-b border-slate-200 text-[10px] font-black text-center py-4 text-slate-400 uppercase tracking-widest">
+                    <div>LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div class="text-indigo-500">SAM</div><div class="text-indigo-500">DIM</div>
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 flex-1">
+                    </div>
+            </div>
+            
+            <div id="studio-nav-mobile" class="md:hidden flex gap-2 overflow-x-auto pb-2 custom-scroll">
+                </div>
+        </section>
+
+    </div>
 
     <script>
         const platforms = [
@@ -271,16 +155,17 @@
             { id: 'pin', name: 'Pin', icon: 'fa-brands fa-pinterest pin-icon', url: "https://www.pinterest.com/business/hub/" }
         ];
 
-        let appData = JSON.parse(localStorage.getItem('abcyara_v7')) || { tasks: [] };
+        let appData = JSON.parse(localStorage.getItem('abcyara_v8')) || { tasks: [] };
         let currentViewDate = new Date();
 
         function renderStudioNav() {
-            const nav = document.getElementById('studio-nav');
-            nav.innerHTML = platforms.map(p => `
-                <a href="${p.url}" target="_blank" class="flex-shrink-0 bg-gray-50 hover:bg-gray-100 border border-gray-200 px-4 py-2 rounded-full flex items-center gap-2 text-[11px] font-bold shadow-sm transition-colors text-gray-700">
-                    <i class="${p.icon} text-lg"></i> ${p.name}
+            const html = platforms.map(p => `
+                <a href="${p.url}" target="_blank" class="bg-white border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:shadow-md transition-all text-slate-600">
+                    <i class="${p.icon}"></i> ${p.name}
                 </a>
             `).join('');
+            document.getElementById('studio-nav').innerHTML = html;
+            document.getElementById('studio-nav-mobile').innerHTML = html;
         }
 
         function renderCalendar() {
@@ -297,7 +182,7 @@
             const startOffset = firstDay === 0 ? 6 : firstDay - 1;
 
             for (let i = 0; i < startOffset; i++) {
-                grid.innerHTML += `<div class="border-b border-r border-gray-100 min-h-[100px] bg-gray-50/50"></div>`;
+                grid.innerHTML += `<div class="border-b border-r border-slate-100 bg-slate-50/50"></div>`;
             }
 
             for (let day = 1; day <= daysInMonth; day++) {
@@ -306,14 +191,14 @@
                 const dayTasks = appData.tasks.filter(t => t.date === dateStr);
                 
                 let tasksHtml = dayTasks.map(task => `
-                    <div class="mt-1.5 bg-white border border-indigo-100 hover:border-indigo-400 shadow-sm rounded-lg p-1.5 group relative cursor-pointer transition-all hover:shadow-md" onclick="openEditModal(${task.id})">
-                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="absolute -top-1.5 -right-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm"><i class="fa-solid fa-xmark"></i></button>
-                        <div class="text-[9px] font-bold text-gray-800 truncate leading-tight mb-1.5" title="${task.title}">${task.title}</div>
-                        <div class="flex justify-between px-0.5" onclick="event.stopPropagation()">
+                    <div class="mt-2 bg-white border border-slate-200 rounded-xl p-2 group relative cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all" onclick="openEditModal(${task.id})">
+                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="absolute -top-2 -right-2 bg-slate-800 text-white rounded-full w-5 h-5 text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg border border-white">×</button>
+                        <div class="text-[9px] font-bold text-slate-800 truncate mb-2">${task.title}</div>
+                        <div class="flex justify-between" onclick="event.stopPropagation()">
                             ${platforms.map(p => `
-                                <div>
+                                <div class="flex flex-col items-center">
                                     <input type="checkbox" id="c-${task.id}-${p.id}" class="social-checkbox" ${task.status[p.id] ? 'checked' : ''} onchange="toggleStatus(${task.id}, '${p.id}', this.checked)">
-                                    <label for="c-${task.id}-${p.id}" class="social-label text-[11px]"><i class="${p.icon}"></i></label>
+                                    <label for="c-${task.id}-${p.id}" class="social-label text-[10px]"><i class="${p.icon}"></i></label>
                                 </div>
                             `).join('')}
                         </div>
@@ -321,15 +206,14 @@
                 `).join('');
 
                 grid.innerHTML += `
-                    <div class="border-b border-r border-gray-200 min-h-[120px] p-1.5 flex flex-col bg-white ${isToday ? 'ring-2 ring-inset ring-indigo-400 bg-indigo-50/10' : 'hover:bg-gray-50 transition-colors'}">
-                        <span class="text-[11px] font-black ${isToday ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-full shadow-md' : 'text-gray-400'} mb-1">${day}</span>
-                        <div class="flex-1 overflow-y-auto custom-scroll pr-1">${tasksHtml}</div>
+                    <div class="border-b border-r border-slate-100 min-h-[120px] p-2 flex flex-col bg-white ${isToday ? 'ring-2 ring-inset ring-indigo-500/20 bg-indigo-50/30' : ''}">
+                        <span class="text-[11px] font-black ${isToday ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-lg shadow-lg' : 'text-slate-300'}">${day}</span>
+                        <div class="flex-1 overflow-y-auto custom-scroll mt-1">${tasksHtml}</div>
                     </div>
                 `;
             }
         }
 
-        /* --- FONCTIONS DES MODALES --- */
         function openEditModal(taskId) {
             const task = appData.tasks.find(t => t.id === taskId);
             if (task) {
@@ -340,34 +224,20 @@
             }
         }
 
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-        }
-
-        function openStrategyModal() {
-            document.getElementById('strategy-modal').classList.remove('hidden');
-        }
-
-        function closeStrategyModal() {
-            document.getElementById('strategy-modal').classList.add('hidden');
-        }
+        function closeEditModal() { document.getElementById('edit-modal').classList.add('hidden'); }
 
         function saveEditTask() {
             const id = parseInt(document.getElementById('edit-task-id').value);
             const newTitle = document.getElementById('edit-task-title').value;
             const newDate = document.getElementById('edit-task-date').value;
-
-            const taskIndex = appData.tasks.findIndex(t => t.id === id);
-            if (taskIndex !== -1 && newTitle && newDate) {
-                appData.tasks[taskIndex].title = newTitle;
-                appData.tasks[taskIndex].date = newDate;
-                save();
-                closeEditModal();
-                renderCalendar();
+            const idx = appData.tasks.findIndex(t => t.id === id);
+            if (idx !== -1 && newTitle && newDate) {
+                appData.tasks[idx].title = newTitle;
+                appData.tasks[idx].date = newDate;
+                save(); closeEditModal(); renderCalendar();
             }
         }
 
-        /* --- AUTRES FONCTIONS DE CONTRÔLE --- */
         function toggleStatus(taskId, platformId, isChecked) {
             const task = appData.tasks.find(t => t.id === taskId);
             if (task) { task.status[platformId] = isChecked; save(); }
@@ -382,23 +252,15 @@
         }
 
         function deleteTask(id) {
-            if(confirm('Supprimer cette vidéo ?')) {
-                appData.tasks = appData.tasks.filter(t => t.id !== id);
-                save(); renderCalendar();
-            }
+            if(confirm('Supprimer ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); }
         }
 
-        function changeMonth(dir) {
-            currentViewDate.setMonth(currentViewDate.getMonth() + dir);
-            renderCalendar();
-        }
+        function changeMonth(dir) { currentViewDate.setMonth(currentViewDate.getMonth() + dir); renderCalendar(); }
+        function save() { localStorage.setItem('abcyara_v8', JSON.stringify(appData)); }
 
-        function save() { localStorage.setItem('abcyara_v7', JSON.stringify(appData)); }
-
-        // Initialisation
         document.getElementById('new-video-date').valueAsDate = new Date();
         renderStudioNav();
         renderCalendar();
     </script>
 </body>
-</html>
+</html> 
