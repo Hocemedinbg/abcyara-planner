@@ -3,102 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abcyara Hub - Calendrier</title>
+    <title>Abcyara - Social Media Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Styles personnalisés pour les checkboxes des réseaux */
         .social-checkbox { display: none; }
-        .social-label { cursor: pointer; transition: all 0.2s; opacity: 0.2; filter: grayscale(100%); }
-        .social-checkbox:checked + .social-label { opacity: 1; filter: grayscale(0%); transform: scale(1.1); }
-        .yt-icon { color: #FF0000; } .tt-icon { color: #000000; } .ig-icon { color: #E1306C; } .fb-icon { color: #1877F2; } .pin-icon { color: #E60023; }
-        
-        /* Mobile scroll hide */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Calendar Grid */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background-color: #e5e7eb; border: 1px solid #e5e7eb; }
-        .calendar-day { background-color: white; min-height: 100px; padding: 0.5rem; transition: background 0.2s; }
-        .calendar-day:hover { background-color: #f9fafb; }
-        .today { background-color: #eff6ff !important; font-weight: bold; }
-        
-        @media (max-width: 768px) {
-            .calendar-day { min-height: 70px; font-size: 0.8rem; }
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; position: fixed; height: 100%; z-index: 50; }
-            .sidebar.open { transform: translateX(0); }
+        .social-label {
+            cursor: pointer; transition: all 0.2s; opacity: 0.3; filter: grayscale(100%);
         }
+        .social-checkbox:checked + .social-label {
+            opacity: 1; filter: grayscale(0%); transform: scale(1.1);
+        }
+        .social-label:hover { opacity: 0.7; }
+        
+        /* Couleurs de marque des réseaux */
+        .yt-icon { color: #FF0000; }
+        .tt-icon { color: #000000; }
+        .ig-icon { color: #E1306C; }
+        .fb-icon { color: #1877F2; }
+        .pin-icon { color: #E60023; }
+
+        /* Custom Scrollbar pour le calendrier sur petit écran */
+        .custom-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans h-screen flex flex-col md:flex-row overflow-hidden">
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
 
-    <button onclick="toggleSidebar()" class="md:hidden fixed bottom-4 right-4 bg-indigo-600 text-white p-4 rounded-full shadow-2xl z-50">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <aside id="sidebar" class="sidebar w-72 bg-white border-r border-gray-200 flex flex-col shrink-0">
-        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold text-indigo-600 italic">Abcyara Hub</h1>
-                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Manager</p>
-            </div>
-            <button onclick="toggleSidebar()" class="md:hidden text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+    <aside class="w-80 bg-white border-r border-gray-200 flex flex-col h-full shadow-lg z-10 shrink-0">
+        <div class="p-6 border-b border-gray-100">
+            <h1 class="text-2xl font-bold text-indigo-600 flex items-center gap-2">
+                <i class="fa-solid fa-rocket"></i> Abcyara Hub
+            </h1>
+            <p class="text-xs text-gray-500 mt-1">Édition Contenu Éducatif Enfant</p>
         </div>
 
-        <div class="p-4 flex-1 overflow-y-auto no-scrollbar">
-            <h2 class="text-xs font-bold text-gray-500 uppercase mb-4 tracking-widest">Raccourcis Studios</h2>
-            <div id="studio-links-container" class="space-y-3"></div>
-            <button onclick="saveLinks()" class="mt-4 w-full bg-indigo-50 text-indigo-600 text-xs py-2 rounded-lg font-bold border border-indigo-100">SAUVEGARDER</button>
+        <div class="p-6 flex-1 overflow-y-auto custom-scroll">
+            <h2 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-4">Configuration des Studios</h2>
+            
+            <div class="space-y-4" id="studio-links-container">
+                </div>
+            
+            <button onclick="saveLinks()" class="mt-4 w-full bg-indigo-50 text-indigo-600 border border-indigo-200 py-2 rounded-md hover:bg-indigo-100 transition text-sm font-medium">
+                Sauvegarder les liens
+            </button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col overflow-hidden">
+    <main class="flex-1 flex flex-col h-full overflow-hidden">
         
-        <header class="bg-white border-b border-gray-200 p-4 md:p-6">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 id="current-month-display" class="text-lg font-bold text-gray-800 min-w-[150px] text-center capitalize">Avril 2026</h2>
-                    <button onclick="changeMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg"><i class="fa-solid fa-chevron-right"></i></button>
+        <header class="bg-white border-b border-gray-200 p-6 shadow-sm shrink-0">
+            <div class="flex justify-between items-start gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">Planning & Suivi de Publication</h2>
+                    <p class="text-sm text-gray-500">Vue d'ensemble de la distribution multi-canal.</p>
                 </div>
-
-                <div class="flex gap-2">
-                    <input type="text" id="new-video-title" class="text-sm border-gray-200 rounded-lg border p-2 w-full md:w-64 focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Titre de la vidéo...">
-                    <input type="date" id="new-video-date" class="text-sm border-gray-200 rounded-lg border p-2">
-                    <button onclick="addVideoTask()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-bold text-sm"><i class="fa-solid fa-plus"></i></button>
+                
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 max-w-md hidden md:block">
+                    <h3 class="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb text-yellow-500"></i> Assistant Social Media
+                    </h3>
+                    <ul class="text-xs text-blue-700 space-y-1">
+                        <li><strong>⏱ Format :</strong> 15 à 30 secondes (idéal pour l'attention des enfants).</li>
+                        <li><strong>⏰ Horaires :</strong> Visez 07h00 (réveil) ou 16h30-17h30 (retour de l'école).</li>
+                        <li><strong>🎨 Hook :</strong> Utilisez des visuels très colorés dans les 2 premières secondes.</li>
+                    </ul>
                 </div>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-2 md:p-6 no-scrollbar">
-            <div class="grid grid-cols-7 mb-1 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                <div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div><div>Dim</div>
-            </div>
+        <div class="p-6 flex-1 overflow-y-auto custom-scroll flex flex-col">
             
-            <div id="calendar-grid" class="calendar-grid rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6 flex flex-wrap gap-4 items-end shrink-0">
+                <div class="flex-1 min-w-[200px]">
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Titre de la vidéo (ex: Daily Routines, Les Fruits)</label>
+                    <input type="text" id="new-video-title" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2 border outline-none" placeholder="Sujet de la vidéo...">
                 </div>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Date de publication</label>
+                    <input type="date" id="new-video-date" class="border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-2 border outline-none">
+                </div>
+                <button onclick="addVideoTask()" class="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition font-medium">
+                    <i class="fa-solid fa-plus mr-1"></i> Ajouter
+                </button>
+            </div>
+
+            <div class="flex justify-between items-center mb-4 shrink-0">
+                <h3 id="month-display" class="text-xl font-bold text-gray-800 capitalize">Mois Année</h3>
+                <div class="flex gap-2">
+                    <button onclick="changeMonth(-1)" class="px-3 py-1 bg-white border border-gray-200 rounded-md hover:bg-gray-50 shadow-sm transition"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="changeMonth(1)" class="px-3 py-1 bg-white border border-gray-200 rounded-md hover:bg-gray-50 shadow-sm transition"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto flex-1 custom-scroll pb-4">
+                <div class="grid grid-cols-7 gap-3 mb-2 text-center text-xs font-bold text-gray-500 uppercase min-w-[800px]">
+                    <div>Lundi</div><div>Mardi</div><div>Mercredi</div><div>Jeudi</div><div>Vendredi</div><div>Samedi</div><div>Dimanche</div>
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-3 min-w-[800px]">
+                </div>
+            </div>
+
         </div>
     </main>
 
     <script>
-        let currentDate = new Date();
-        const platforms = [
-            { id: 'yt', name: 'YouTube', icon: 'fa-brands fa-youtube yt-icon' },
-            { id: 'tt', name: 'TikTok', icon: 'fa-brands fa-tiktok tt-icon' },
-            { id: 'ig', name: 'Instagram', icon: 'fa-brands fa-instagram ig-icon' },
-            { id: 'pin', name: 'Pinterest', icon: 'fa-brands fa-pinterest pin-icon' },
-            { id: 'fb', name: 'Facebook', icon: 'fa-brands fa-facebook fb-icon' }
-        ];
-
-        let appData = JSON.parse(localStorage.getItem('abcyara_v3')) || {
-            links: { yt: "https://studio.youtube.com", tt: "https://www.tiktok.com", ig: "https://business.facebook.com", pin: "https://pinterest.com", fb: "https://facebook.com" },
-            tasks: []
+        // --- 1. GESTION DES DONNÉES (State Management) ---
+        
+        const defaultData = {
+            links: {
+                youtube: "https://studio.youtube.com",
+                tiktok: "https://www.tiktok.com/creators/creator-portal/",
+                instagram: "https://business.facebook.com/creatorstudio/home",
+                facebook: "https://business.facebook.com/",
+                pinterest: "https://www.pinterest.com/business/hub/"
+            },
+            tasks: [
+                { id: 1, title: "Vocabulaire : Les Fruits 🍎", date: new Date().toISOString().split('T')[0], status: { yt: true, tt: false, ig: true, fb: false, pin: false } }
+            ]
         };
 
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+        let appData = JSON.parse(localStorage.getItem('abcyara_v4')) || defaultData;
+
+        const platforms = [
+            { id: 'youtube', name: 'YouTube', icon: 'fa-brands fa-youtube yt-icon' },
+            { id: 'tiktok', name: 'TikTok', icon: 'fa-brands fa-tiktok tt-icon' },
+            { id: 'instagram', name: 'Instagram', icon: 'fa-brands fa-instagram ig-icon' },
+            { id: 'facebook', name: 'Facebook', icon: 'fa-brands fa-facebook fb-icon' },
+            { id: 'pinterest', name: 'Pinterest', icon: 'fa-brands fa-pinterest pin-icon' }
+        ];
+
+        let currentViewDate = new Date();
+
+        // --- 2. FONCTIONS DE RENDU (UI) ---
 
         function renderStudioLinks() {
             const container = document.getElementById('studio-links-container');
-            container.innerHTML = platforms.map(p => `
+            container.innerHTML = platforms.map(platform => `
+                <div class="flex flex-col gap-1">
+                    <label class="text-xs font-semibold text-gray-600 flex items-center gap-2">
+                        <i class="${platform.icon} text-lg"></i> ${platform.name}
+                    </label>
+                    <div class="flex gap-2">
+                        <input type="url" id="link-${platform.id}" value="${appData.links[platform.id]}" class="w-full text-xs border border-gray-300 rounded-md p-2 focus:border-indigo-500 outline-none">
+                        <a href="${appData.links[platform.id]}" target="_blank" class="bg-gray-100 border border-gray-300 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-xs flex items-center justify-center transition" title="Ouvrir le Studio">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const monthDisplay = document.getElementById('month-display');
+            grid.innerHTML = '';
+
+            const year = currentViewDate.getFullYear();
+            const month = currentViewDate.getMonth();
+            
+            // Affichage du mois en cours
+            monthDisplay.innerText = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(currentViewDate);
+
+            // Logique du calendrier
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const startOffset = firstDay === 0 ? 6 : firstDay - 1; // Lundi = 0
+
+            // Cases vides pour le début du mois
+            for (let i = 0; i < startOffset; i++) {
+                grid.innerHTML += `<div class="bg-gray-50 border border-gray-100 rounded-lg min-h-[140px] opacity-40"></div>`;
+            }
+
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            // Remplissage des jours
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = todayStr === dateStr;
+                const dayTasks = appData.tasks.filter(t => t.date === dateStr);
+
+                // Génération des petites cartes vidéos pour ce jour
+                let tasksHtml = dayTasks.map(task => {
+                    const completed = platforms.filter(p => task.status[p.id === 'youtube' ? 'yt' : p.id === 'tiktok' ? 'tt' : p.id === 'instagram' ? 'ig' : p.id === 'facebook' ? 'fb' : 'pin']).length;
+                    const progressPercentage = (completed / platforms.length) * 100;
+                    let statusColor = progressPercentage === 100 ? 'bg-green-500' : (progressPercentage > 0 ? 'bg-yellow-400' : 'bg-gray-200');
+
+                    const socialIcons = platforms.map(p => {
+                        const shortId = p.id === 'youtube' ? 'yt' : p.id === 'tiktok' ? 'tt' : p.id === 'instagram' ? 'ig' : p.id === 'facebook' ? 'fb' : 'pin';
+                        const isChecked = task.status[shortId];
+                        const inputId = `chk-${task.id}-${shortId}`;
+                        return `
+                            <div>
+                                <input type="checkbox" id="${inputId}" class="social-checkbox" ${isChecked ? 'checked' : ''} onchange="toggleStatus(${task.id}, '${shortId}', this.checked)">
+                                <label for="${inputId}" class="social-label block text-sm" title="${p.name}"><i class="${p.icon}"></i></label>
+                            </div>
+                        `;
+                    }).join('');
+
+                    return `
+                    <div class="mt-2 bg-white rounded-lg shadow-sm border border-gray-200 p-2 relative overflow-hidden group hover:border-indigo-300 transition">
+                        <div class="absolute top-0 left-0 h-1 ${statusColor} transition-all duration-500" style="width: ${progressPercentage}%"></div>
+                        <div class="flex justify-between items-start mt-1 mb-2">
+                            <h4 class="font-bold text-gray-800 text-[11px] leading-tight flex-1 pr-1" title="${task.title}">${task.title}</h4>
+                            <button onclick="deleteTask(${task.id})" class="text-gray-300 hover:text-red-500 transition opacity-0 group-hover:opacity-100 flex-shrink-0">
+                                <i class="fa-solid fa-trash-can text-[10px]"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between border-t border-gray-100 pt-1.5 mt-auto">
+                            ${socialIcons}
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+
+                // Style de la case du jour
+                const headerColor = isToday ? 'text-indigo-600 bg-indigo-50 font-bold' : 'text-gray-600 font-medium';
+                const borderClass = isToday ? 'border-indigo-300 ring-2 ring-indigo-50' : 'border-gray-200';
+
+                grid.innerHTML += `
+                    <div class="bg-white border ${borderClass} rounded-lg min-h-[140px] flex flex-col p-2">
+                        <span class="text-xs inline-block rounded w-7 h-7 text-center leading-7 ${headerColor}">${day}</span>
+                        <div class="flex-1 flex flex-col">${tasksHtml}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 3. LOGIQUE D'ACTION (Controllers) ---
+
+        function changeMonth(direction) {
+            currentViewDate.setMonth(currentViewDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        function saveLinks() {
+            platforms.forEach(p => appData.links[p.id] = document.getElementById(`link-${p.id}`).value);
+            saveData();
+            renderStudioLinks();
+        }
+
+        function toggleStatus(taskId, platformShortId, isChecked) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            if (task) {
+                task.status[platformShortId] = isChecked;
+                saveData();
+                renderCalendar(); 
+            }
+        }
+
+        function addVideoTask() {
+            const titleInput = document.getElementById('new-video-title');
+            const dateInput = document.getElementById('new-video-date');
+            
+            if (!titleInput.value || !dateInput.value) return;
+
+            // Ajout du projet, date fixée, et affichage de la bonne période
+            const inputDateObj = new Date(dateInput.value);
+            currentViewDate = new Date(inputDateObj.getFullYear(), inputDateObj.getMonth(), 1); // Se déplacer sur le mois d'ajout
+
+            appData.tasks.push({
+                id: Date.now(),
+                title: titleInput.value,
+                date: dateInput.value,
+                status: { yt: false, tt: false, ig: false, fb: false, pin: false }
+            });
+
+            saveData();
+            renderCalendar();
+            
+            titleInput.value = '';
+        }
+
+        function deleteTask(taskId) {
+            if(confirm("Supprimer cette vidéo du planning ?")) {
+                appData.tasks = appData.tasks.filter(t => t.id !== taskId);
+                saveData();
+                renderCalendar();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('abcyara_v4', JSON.stringify(appData));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('new-video-date').valueAsDate = new Date();
+            renderStudioLinks();
+            renderCalendar();
+        });
+
+    </script>
+</body>
+</html>            container.innerHTML = platforms.map(p => `
                 <div class="space-y-1">
                     <label class="text-[10px] font-bold text-gray-400 flex items-center gap-2"><i class="${p.icon}"></i> ${p.name.toUpperCase()}</label>
                     <div class="flex gap-1">
