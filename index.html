@@ -54,8 +54,7 @@
                     <p class="text-[10px] font-bold text-indigo-500 tracking-widest uppercase mt-1">Édition Tunisie • UTC+1</p>
                 </div>
             </div>
-            <div id="studio-nav" class="hidden md:flex gap-2">
-                </div>
+            <div id="studio-nav" class="hidden md:flex gap-2"></div>
         </div>
     </header>
 
@@ -78,54 +77,38 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 overflow-hidden">
+            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
+                <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                    <i class="fa-solid fa-gears text-indigo-500"></i> Configurer les Studios
+                </h2>
+                <div id="config-links" class="space-y-2">
+                    </div>
+            </section>
+
+            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 overflow-hidden text-[11px]">
                 <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
                     <i class="fa-solid fa-chart-line text-green-500"></i> Recommandations
                 </h2>
-                <div class="space-y-3">
-                    <div class="p-3 rounded-2xl bg-red-50 border border-red-100 flex justify-between items-center">
-                        <span class="text-xs font-bold text-red-700"><i class="fa-brands fa-youtube mr-2"></i>YouTube</span>
-                        <span class="text-[10px] font-black bg-red-200 text-red-800 px-2 py-1 rounded-lg italic">16h - 19h</span>
+                <div class="space-y-2">
+                    <div class="p-2 rounded-xl bg-red-50 border border-red-100 flex justify-between items-center">
+                        <span class="font-bold text-red-700">YouTube</span>
+                        <span class="font-black opacity-60 italic">16h - 19h</span>
                     </div>
-                    <div class="p-3 rounded-2xl bg-slate-100 border border-slate-200 flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-800"><i class="fa-brands fa-tiktok mr-2"></i>TikTok</span>
-                        <span class="text-[10px] font-black bg-slate-200 text-slate-800 px-2 py-1 rounded-lg italic">12h-14h / 19h-22h</span>
+                    <div class="p-2 rounded-xl bg-slate-100 border border-slate-200 flex justify-between items-center">
+                        <span class="font-bold text-slate-800">TikTok</span>
+                        <span class="font-black opacity-60 italic">12h-14h / 19h-22h</span>
                     </div>
-                    <div class="p-3 rounded-2xl bg-pink-50 border border-pink-100 flex justify-between items-center">
-                        <span class="text-xs font-bold text-pink-700"><i class="fa-brands fa-instagram mr-2"></i>Instagram</span>
-                        <span class="text-[10px] font-black bg-pink-200 text-pink-800 px-2 py-1 rounded-lg italic">13h-15h / 20h-22h</span>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-orange-50 border border-orange-100 flex justify-between items-center">
-                        <span class="text-xs font-bold text-orange-700"><i class="fa-brands fa-pinterest mr-2"></i>Pinterest</span>
-                        <span class="text-[10px] font-black bg-orange-200 text-orange-800 px-2 py-1 rounded-lg italic">15h - 17h</span>
-                    </div>
-                    <div class="p-3 rounded-2xl bg-blue-50 border border-blue-100 flex justify-between items-center">
-                        <span class="text-xs font-bold text-blue-700"><i class="fa-brands fa-facebook mr-2"></i>Facebook</span>
-                        <span class="text-[10px] font-black bg-blue-200 text-blue-800 px-2 py-1 rounded-lg italic">14h-16h / 19h-21h</span>
+                    <div class="p-2 rounded-xl bg-pink-50 border border-pink-100 flex justify-between items-center">
+                        <span class="font-bold text-pink-700">Instagram</span>
+                        <span class="font-black opacity-60 italic">13h-15h / 20h-22h</span>
                     </div>
                 </div>
             </section>
-
-            <section class="bg-indigo-900 rounded-3xl p-5 shadow-xl text-white">
-                <h2 class="text-sm font-black mb-4 flex items-center gap-2 uppercase tracking-tighter">
-                    <i class="fa-solid fa-calendar-check text-indigo-300"></i> Routine Hebdomadaire
-                </h2>
-                <div class="space-y-2 text-[10px] opacity-90">
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>LUN</strong> <span>Vidéo YouTube (16h)</span></div>
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>MAR</strong> <span>2 TikTok (12h/20h) + Pin</span></div>
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>MER</strong> <span>Reel (13h) + Clip FB</span></div>
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>JEU</strong> <span>YouTube Shorts (17h)</span></div>
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>VEN</strong> <span>Vidéo YouTube (17h)</span></div>
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><strong>SAM</strong> <span>Live Facebook (19h)</span></div>
-                    <div class="flex justify-between"><strong>DIM</strong> <span>Récap TikTok (12h)</span></div>
-                </div>
-            </section>
-
         </aside>
 
         <section class="flex flex-col gap-4">
             <div class="flex justify-between items-center bg-white p-4 rounded-3xl shadow-sm border border-slate-200">
-                <h2 id="month-display" class="font-black text-slate-800 uppercase tracking-tighter text-xl">---</h2>
+                <h2 id="month-display" class="font-black text-slate-800 uppercase tracking-tighter text-xl leading-none">---</h2>
                 <div class="flex gap-2">
                     <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-left"></i></button>
                     <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-right"></i></button>
@@ -136,18 +119,16 @@
                 <div class="grid grid-cols-7 bg-slate-50 border-b border-slate-200 text-[10px] font-black text-center py-4 text-slate-400 uppercase tracking-widest">
                     <div>LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div class="text-indigo-500">SAM</div><div class="text-indigo-500">DIM</div>
                 </div>
-                <div id="calendar-grid" class="grid grid-cols-7 flex-1">
-                    </div>
+                <div id="calendar-grid" class="grid grid-cols-7 flex-1"></div>
             </div>
             
-            <div id="studio-nav-mobile" class="md:hidden flex gap-2 overflow-x-auto pb-2 custom-scroll">
-                </div>
+            <div id="studio-nav-mobile" class="md:hidden flex gap-2 overflow-x-auto pb-2 custom-scroll"></div>
         </section>
-
     </div>
 
     <script>
-        const platforms = [
+        // Configuration initiale par défaut
+        const defaultPlatforms = [
             { id: 'yt', name: 'YouTube', icon: 'fa-brands fa-youtube yt-icon', url: "https://studio.youtube.com" },
             { id: 'tt', name: 'TikTok', icon: 'fa-brands fa-tiktok tt-icon', url: "https://www.tiktok.com/creators/creator-portal/" },
             { id: 'ig', name: 'Insta', icon: 'fa-brands fa-instagram ig-icon', url: "https://business.facebook.com/creatorstudio/home" },
@@ -155,17 +136,43 @@
             { id: 'pin', name: 'Pin', icon: 'fa-brands fa-pinterest pin-icon', url: "https://www.pinterest.com/business/hub/" }
         ];
 
+        // Chargement des données (V8 + Plateformes configurables)
         let appData = JSON.parse(localStorage.getItem('abcyara_v8')) || { tasks: [] };
+        let platforms = JSON.parse(localStorage.getItem('abcyara_platforms')) || defaultPlatforms;
         let currentViewDate = new Date();
 
+        // Rendu des liens Studio (Barre de navigation)
         function renderStudioNav() {
             const html = platforms.map(p => `
-                <a href="${p.url}" target="_blank" class="bg-white border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:shadow-md transition-all text-slate-600">
+                <a href="${p.url}" target="_blank" class="bg-white border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:shadow-md hover:border-indigo-300 transition-all text-slate-600">
                     <i class="${p.icon}"></i> ${p.name}
                 </a>
             `).join('');
             document.getElementById('studio-nav').innerHTML = html;
             document.getElementById('studio-nav-mobile').innerHTML = html;
+        }
+
+        // Rendu du formulaire de configuration des liens
+        function renderConfigLinks() {
+            const container = document.getElementById('config-links');
+            container.innerHTML = platforms.map(p => `
+                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
+                    <div class="w-8 flex justify-center text-sm"><i class="${p.icon}"></i></div>
+                    <input type="text" value="${p.url}" 
+                        onchange="updatePlatformUrl('${p.id}', this.value)"
+                        placeholder="Lien ${p.name}"
+                        class="flex-1 bg-transparent text-[10px] outline-none border-b border-transparent focus:border-indigo-400 font-medium">
+                </div>
+            `).join('');
+        }
+
+        function updatePlatformUrl(id, newUrl) {
+            const plat = platforms.find(p => p.id === id);
+            if (plat) {
+                plat.url = newUrl;
+                localStorage.setItem('abcyara_platforms', JSON.stringify(platforms));
+                renderStudioNav(); // Mise à jour immédiate des liens cliquables
+            }
         }
 
         function renderCalendar() {
@@ -214,6 +221,7 @@
             }
         }
 
+        // Fonctions de gestion des tâches
         function openEditModal(taskId) {
             const task = appData.tasks.find(t => t.id === taskId);
             if (task) {
@@ -223,26 +231,20 @@
                 document.getElementById('edit-modal').classList.remove('hidden');
             }
         }
-
         function closeEditModal() { document.getElementById('edit-modal').classList.add('hidden'); }
-
         function saveEditTask() {
             const id = parseInt(document.getElementById('edit-task-id').value);
-            const newTitle = document.getElementById('edit-task-title').value;
-            const newDate = document.getElementById('edit-task-date').value;
             const idx = appData.tasks.findIndex(t => t.id === id);
-            if (idx !== -1 && newTitle && newDate) {
-                appData.tasks[idx].title = newTitle;
-                appData.tasks[idx].date = newDate;
+            if (idx !== -1) {
+                appData.tasks[idx].title = document.getElementById('edit-task-title').value;
+                appData.tasks[idx].date = document.getElementById('edit-task-date').value;
                 save(); closeEditModal(); renderCalendar();
             }
         }
-
         function toggleStatus(taskId, platformId, isChecked) {
             const task = appData.tasks.find(t => t.id === taskId);
             if (task) { task.status[platformId] = isChecked; save(); }
         }
-
         function addVideoTask() {
             const t = document.getElementById('new-video-title');
             const d = document.getElementById('new-video-date');
@@ -250,16 +252,16 @@
             appData.tasks.push({ id: Date.now(), title: t.value, date: d.value, status: {yt:false, tt:false, ig:false, fb:false, pin:false} });
             save(); t.value = ''; renderCalendar();
         }
-
         function deleteTask(id) {
             if(confirm('Supprimer ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); }
         }
-
         function changeMonth(dir) { currentViewDate.setMonth(currentViewDate.getMonth() + dir); renderCalendar(); }
         function save() { localStorage.setItem('abcyara_v8', JSON.stringify(appData)); }
 
+        // Initialisation
         document.getElementById('new-video-date').valueAsDate = new Date();
         renderStudioNav();
+        renderConfigLinks();
         renderCalendar();
     </script>
 </body>
