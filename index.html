@@ -84,22 +84,37 @@
                 <div class="grid grid-cols-1 gap-2 text-[10px]">
                     <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
                         <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-youtube text-red-600"></i> YouTube</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black">16:9 • 8-12 min</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">16:9 • 8-12m</span>
                     </div>
                     <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-tiktok"></i> TikTok / Shorts</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black">9:16 • 15-60 sec</span>
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-tiktok"></i> TikTok/Shorts</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">9:16 • 15-60s</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-instagram text-pink-600"></i> Reels</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">9:16 • 30-90s</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-facebook text-blue-600"></i> FB Vidéo</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">1:1 / 4:5 • 3m+</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-pinterest text-red-700"></i> Pinterest</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">2:3 • 15-30s</span>
                     </div>
                 </div>
             </section>
 
             <section class="bg-indigo-900 rounded-3xl p-5 shadow-xl text-white">
                 <h2 class="text-xs font-black mb-4 flex items-center gap-2 uppercase tracking-widest text-indigo-300">
-                    <i class="fa-solid fa-clock"></i> Heures de pointe
+                    <i class="fa-solid fa-clock"></i> Heures de pointe (TN)
                 </h2>
                 <div class="space-y-2 text-[10px]">
-                    <div class="flex justify-between border-b border-indigo-800 pb-1"><span>YouTube</span> <strong>16h-19h</strong></div>
-                    <div class="flex justify-between"><span>TikTok/Insta</span> <strong>19h-22h</strong></div>
+                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-youtube mr-1"></i> YouTube</span> <strong>16h-19h</strong></div>
+                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-tiktok mr-1"></i> TikTok</span> <strong>19h-22h</strong></div>
+                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-instagram mr-1"></i> Instagram</span> <strong>20h-22h</strong></div>
+                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-facebook mr-1"></i> Facebook</span> <strong>13h-16h</strong></div>
+                    <div class="flex justify-between"><span><i class="fa-brands fa-pinterest mr-1"></i> Pinterest</span> <strong>14h-16h</strong></div>
                 </div>
             </section>
 
@@ -159,7 +174,6 @@
         let platforms = JSON.parse(localStorage.getItem('abcyara_platforms')) || defaultPlatforms;
         let currentViewDate = new Date();
 
-        // LOGIQUE EXPORT JSON
         function exportJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchorNode = document.createElement('a');
@@ -170,7 +184,6 @@
             downloadAnchorNode.remove();
         }
 
-        // LOGIQUE EXPORT CSV
         function exportCSV() {
             let csvContent = "data:text/csv;charset=utf-8,ID;Date;Titre;YouTube;TikTok;Insta;FB;Pinterest\n";
             appData.tasks.forEach(t => {
