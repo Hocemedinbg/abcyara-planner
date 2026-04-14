@@ -7,51 +7,58 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body { background-color: #121212; color: #ffffff; }
+        .card-bg { background-color: #1E1E1E; border-color: #333333; }
+        .input-bg { background-color: #121212; border-color: #333333; color: #ffffff; }
+        .input-bg:focus { border-color: #6366f1; }
+        .item-bg { background-color: #252525; border-color: #333333; }
+        
         .social-checkbox { display: none; }
-        .social-label { cursor: pointer; transition: 0.2s; opacity: 0.2; filter: grayscale(100%); }
+        .social-label { cursor: pointer; transition: 0.2s; opacity: 0.3; filter: grayscale(100%); }
         .social-checkbox:checked + .social-label { opacity: 1; filter: grayscale(0%); transform: scale(1.2); }
-        .yt-icon { color: #FF0000; } .tt-icon { color: #000000; } .ig-icon { color: #E1306C; }
+        .yt-icon { color: #FF0000; } .tt-icon { color: #ffffff; } .ig-icon { color: #E1306C; }
         .fb-icon { color: #1877F2; } .pin-icon { color: #E60023; }
+        
         .custom-scroll::-webkit-scrollbar { height: 5px; width: 5px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 10px; }
-        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scroll::-webkit-scrollbar-track { background: #1E1E1E; }
         @media (min-width: 1024px) { .main-grid { grid-template-columns: 400px 1fr; } }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen">
+<body class="font-sans min-h-screen">
 
-    <div id="edit-modal" class="fixed inset-0 bg-slate-900/50 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm border border-indigo-100">
-            <h3 class="font-bold text-lg mb-4 text-indigo-600 flex items-center gap-2">
+    <div id="edit-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="card-bg rounded-2xl shadow-2xl p-6 w-full max-w-sm border">
+            <h3 class="font-bold text-lg mb-4 text-indigo-400 flex items-center gap-2">
                 <i class="fa-solid fa-pen-to-square"></i> Modifier la publication
             </h3>
             <input type="hidden" id="edit-task-id">
             <div class="space-y-4">
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Titre de la vidéo</label>
-                    <input type="text" id="edit-task-title" class="w-full border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:ring-2 focus:ring-indigo-400 outline-none">
+                    <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Titre de la vidéo</label>
+                    <input type="text" id="edit-task-title" class="w-full border p-3 rounded-xl text-sm input-bg outline-none">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">Date de publication</label>
-                    <input type="date" id="edit-task-date" class="w-full border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:ring-2 focus:ring-indigo-400 outline-none">
+                    <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Date de publication</label>
+                    <input type="date" id="edit-task-date" class="w-full border p-3 rounded-xl text-sm input-bg outline-none" style="color-scheme: dark;">
                 </div>
             </div>
             <div class="flex justify-end gap-2 mt-6">
-                <button onclick="closeEditModal()" class="px-4 py-2 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Annuler</button>
-                <button onclick="saveEditTask()" class="px-6 py-2 text-sm font-bold bg-indigo-600 text-white rounded-xl shadow-lg active:scale-95 transition-all">Mettre à jour</button>
+                <button onclick="closeEditModal()" class="px-4 py-2 text-sm font-bold text-gray-400 hover:text-white transition-colors">Annuler</button>
+                <button onclick="saveEditTask()" class="px-6 py-2 text-sm font-bold bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg active:scale-95 transition-all">Mettre à jour</button>
             </div>
         </div>
     </div>
 
-    <header class="bg-white border-b border-slate-200 p-4 sticky top-0 z-40 shadow-sm">
+    <header class="card-bg border-b p-4 sticky top-0 z-40 shadow-md">
         <div class="max-w-[1800px] mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="bg-indigo-600 p-2 rounded-lg text-white shadow-indigo-200 shadow-lg">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white shadow-lg">
                     <i class="fa-solid fa-rocket text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-black text-slate-900 leading-none">Abcyara Hub</h1>
-                    <p class="text-[10px] font-bold text-indigo-500 tracking-widest uppercase mt-1">Édition Tunisie • UTC+1</p>
+                    <h1 class="text-xl font-black text-white leading-none">Abcyara Hub</h1>
+                    <p class="text-[10px] font-bold text-indigo-400 tracking-widest uppercase mt-1">Édition Tunisie • UTC+1</p>
                 </div>
             </div>
             <div id="studio-nav" class="hidden md:flex gap-2"></div>
@@ -62,78 +69,98 @@
         
         <aside class="space-y-6">
             
-            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
-                <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+            <section class="card-bg rounded-3xl p-5 shadow-sm border">
+                <h2 class="text-sm font-black text-gray-200 mb-4 flex items-center gap-2 uppercase tracking-tighter">
                     <i class="fa-solid fa-plus-circle text-indigo-500"></i> Planifier
                 </h2>
                 <div class="flex flex-col gap-3">
-                    <input type="text" id="new-video-title" placeholder="Titre de la vidéo..." class="border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 outline-none transition-all">
+                    <input type="text" id="new-video-title" placeholder="Titre de la vidéo..." class="border p-3 rounded-xl text-sm input-bg outline-none transition-all">
                     <div class="flex gap-2">
-                        <input type="date" id="new-video-date" class="border border-slate-200 p-3 rounded-xl text-sm flex-1 bg-slate-50 outline-none">
-                        <button onclick="addVideoTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-lg active:scale-95 transition-all">
+                        <input type="date" id="new-video-date" class="border p-3 rounded-xl text-sm flex-1 input-bg outline-none" style="color-scheme: dark;">
+                        <button onclick="addVideoTask()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl shadow-lg active:scale-95 transition-all">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
                 </div>
             </section>
 
-            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
-                <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+            <section class="card-bg rounded-3xl p-5 shadow-sm border">
+                <h2 class="text-sm font-black text-gray-200 mb-4 flex items-center gap-2 uppercase tracking-tighter">
                     <i class="fa-solid fa-video text-orange-500"></i> Formats & Durées
                 </h2>
                 <div class="grid grid-cols-1 gap-2 text-[10px]">
-                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-youtube text-red-600"></i> YouTube</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">16:9 • 8-12m</span>
+                    <div class="flex items-center justify-between p-2 item-bg rounded-xl border">
+                        <span class="font-bold flex items-center gap-2 text-gray-200"><i class="fa-brands fa-youtube text-red-600"></i> YouTube</span>
+                        <span class="bg-[#121212] px-2 py-1 rounded border border-[#444] text-gray-300 font-black uppercase">16:9 • 8-12m</span>
                     </div>
-                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-tiktok"></i> TikTok/Shorts</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">9:16 • 15-60s</span>
+                    <div class="flex items-center justify-between p-2 item-bg rounded-xl border">
+                        <span class="font-bold flex items-center gap-2 text-gray-200"><i class="fa-brands fa-tiktok text-white"></i> TikTok/Shorts</span>
+                        <span class="bg-[#121212] px-2 py-1 rounded border border-[#444] text-gray-300 font-black uppercase">9:16 • 15-60s</span>
                     </div>
-                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-instagram text-pink-600"></i> Reels</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">9:16 • 30-90s</span>
+                    <div class="flex items-center justify-between p-2 item-bg rounded-xl border">
+                        <span class="font-bold flex items-center gap-2 text-gray-200"><i class="fa-brands fa-instagram text-pink-500"></i> Reels</span>
+                        <span class="bg-[#121212] px-2 py-1 rounded border border-[#444] text-gray-300 font-black uppercase">9:16 • 30-90s</span>
                     </div>
-                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-facebook text-blue-600"></i> FB Vidéo</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">1:1 / 4:5 • 3m+</span>
+                    <div class="flex items-center justify-between p-2 item-bg rounded-xl border">
+                        <span class="font-bold flex items-center gap-2 text-gray-200"><i class="fa-brands fa-facebook text-blue-500"></i> FB Vidéo</span>
+                        <span class="bg-[#121212] px-2 py-1 rounded border border-[#444] text-gray-300 font-black uppercase">1:1 / 4:5 • 3m+</span>
                     </div>
-                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
-                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-pinterest text-red-700"></i> Pinterest</span>
-                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black uppercase">2:3 • 15-30s</span>
+                    <div class="flex items-center justify-between p-2 item-bg rounded-xl border">
+                        <span class="font-bold flex items-center gap-2 text-gray-200"><i class="fa-brands fa-pinterest text-red-600"></i> Pinterest</span>
+                        <span class="bg-[#121212] px-2 py-1 rounded border border-[#444] text-gray-300 font-black uppercase">2:3 • 15-30s</span>
                     </div>
                 </div>
             </section>
 
-            <section class="bg-indigo-900 rounded-3xl p-5 shadow-xl text-white">
+            <section class="bg-[#2D2A54] border border-[#3D3A64] rounded-3xl p-5 shadow-xl text-white">
                 <h2 class="text-xs font-black mb-4 flex items-center gap-2 uppercase tracking-widest text-indigo-300">
-                    <i class="fa-solid fa-clock"></i> Heures de pointe (TN)
+                    <i class="fa-solid fa-clock"></i> Heures & Jours (TN)
                 </h2>
                 <div class="space-y-2 text-[10px]">
-                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-youtube mr-1"></i> YouTube</span> <strong>16h-19h</strong></div>
-                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-tiktok mr-1"></i> TikTok</span> <strong>19h-22h</strong></div>
-                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-instagram mr-1"></i> Instagram</span> <strong>20h-22h</strong></div>
-                    <div class="flex justify-between border-b border-indigo-800/50 pb-1"><span><i class="fa-brands fa-facebook mr-1"></i> Facebook</span> <strong>13h-16h</strong></div>
-                    <div class="flex justify-between"><span><i class="fa-brands fa-pinterest mr-1"></i> Pinterest</span> <strong>14h-16h</strong></div>
+                    <div class="flex justify-between border-b border-[#4D4A74] pb-2 items-center">
+                        <span><i class="fa-brands fa-youtube mr-1"></i> YouTube</span> 
+                        <span class="text-right font-black text-indigo-200">JEU-VEN <span class="text-white ml-1">16h-19h</span></span>
+                    </div>
+                    <div class="flex justify-between border-b border-[#4D4A74] pb-2 pt-1 items-center">
+                        <span><i class="fa-brands fa-tiktok mr-1"></i> TikTok</span> 
+                        <span class="text-right font-black text-indigo-200">MAR-JEU <span class="text-white ml-1">19h-22h</span></span>
+                    </div>
+                    <div class="flex justify-between border-b border-[#4D4A74] pb-2 pt-1 items-center">
+                        <span><i class="fa-brands fa-instagram mr-1"></i> Instagram</span> 
+                        <span class="text-right font-black text-indigo-200">MER-VEN <span class="text-white ml-1">20h-22h</span></span>
+                    </div>
+                    <div class="flex justify-between border-b border-[#4D4A74] pb-2 pt-1 items-center">
+                        <span><i class="fa-brands fa-facebook mr-1"></i> Facebook</span> 
+                        <span class="text-right font-black text-indigo-200">MAR-JEU <span class="text-white ml-1">13h-16h</span></span>
+                    </div>
+                    <div class="flex justify-between pt-1 items-center">
+                        <span><i class="fa-brands fa-pinterest mr-1"></i> Pinterest</span> 
+                        <span class="text-right font-black text-indigo-200">SAM-DIM <span class="text-white ml-1">14h-16h</span></span>
+                    </div>
                 </div>
             </section>
 
-            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
-                <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+            <section class="card-bg rounded-3xl p-5 shadow-sm border">
+                <h2 class="text-sm font-black text-gray-200 mb-4 flex items-center gap-2 uppercase tracking-tighter">
                     <i class="fa-solid fa-link text-indigo-500"></i> Liens Studios
                 </h2>
                 <div id="config-links" class="space-y-2"></div>
             </section>
 
-            <section class="bg-slate-800 rounded-3xl p-5 shadow-lg text-white">
-                <h2 class="text-xs font-black mb-4 flex items-center gap-2 uppercase tracking-widest text-slate-400">
-                    <i class="fa-solid fa-file-export"></i> Sauvegarde & Export
+            <section class="bg-[#1a1a24] border border-[#2a2a35] rounded-3xl p-5 shadow-lg text-white">
+                <h2 class="text-xs font-black mb-4 flex items-center gap-2 uppercase tracking-widest text-gray-400">
+                    <i class="fa-solid fa-database"></i> Données (Import/Export)
                 </h2>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="exportJSON()" class="bg-slate-700 hover:bg-slate-600 py-2 px-3 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-2">
+                <div class="grid grid-cols-3 gap-2">
+                    <input type="file" id="import-file" accept=".json" class="hidden" onchange="importJSON(event)">
+                    
+                    <button onclick="document.getElementById('import-file').click()" class="bg-indigo-600 hover:bg-indigo-500 py-2 px-2 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-download"></i> Importer
+                    </button>
+                    <button onclick="exportJSON()" class="bg-[#2a2a35] hover:bg-[#3a3a45] py-2 px-2 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-1">
                         <i class="fa-solid fa-code text-indigo-400"></i> JSON
                     </button>
-                    <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 py-2 px-3 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-2">
+                    <button onclick="exportCSV()" class="bg-[#2a2a35] hover:bg-[#3a3a45] py-2 px-2 rounded-xl text-[10px] font-bold transition-all flex items-center justify-center gap-1">
                         <i class="fa-solid fa-file-csv text-green-400"></i> CSV
                     </button>
                 </div>
@@ -142,19 +169,19 @@
         </aside>
 
         <section class="flex flex-col gap-4">
-            <div class="flex justify-between items-center bg-white p-4 rounded-3xl shadow-sm border border-slate-200">
-                <h2 id="month-display" class="font-black text-slate-800 uppercase tracking-tighter text-xl leading-none">---</h2>
+            <div class="flex justify-between items-center card-bg p-4 rounded-3xl shadow-sm border">
+                <h2 id="month-display" class="font-black text-white uppercase tracking-tighter text-xl leading-none">---</h2>
                 <div class="flex gap-2">
-                    <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-left"></i></button>
-                    <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center bg-[#121212] border border-[#333] rounded-xl hover:bg-[#252525] transition-all"><i class="fa-solid fa-chevron-left text-gray-400"></i></button>
+                    <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center bg-[#121212] border border-[#333] rounded-xl hover:bg-[#252525] transition-all"><i class="fa-solid fa-chevron-right text-gray-400"></i></button>
                 </div>
             </div>
 
-            <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden flex-1 flex flex-col min-h-[600px]">
-                <div class="grid grid-cols-7 bg-slate-50 border-b border-slate-200 text-[10px] font-black text-center py-4 text-slate-400 uppercase tracking-widest">
-                    <div>LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div class="text-indigo-500">SAM</div><div class="text-indigo-500">DIM</div>
+            <div class="card-bg rounded-[2rem] shadow-sm border overflow-hidden flex-1 flex flex-col min-h-[600px]">
+                <div class="grid grid-cols-7 bg-[#1A1A1A] border-b border-[#333] text-[10px] font-black text-center py-4 text-gray-400 uppercase tracking-widest">
+                    <div>LUN</div><div>MAR</div><div>MER</div><div>JEU</div><div>VEN</div><div class="text-indigo-400">SAM</div><div class="text-indigo-400">DIM</div>
                 </div>
-                <div id="calendar-grid" class="grid grid-cols-7 flex-1"></div>
+                <div id="calendar-grid" class="grid grid-cols-7 flex-1 bg-[#1A1A1A]"></div>
             </div>
             
             <div id="studio-nav-mobile" class="md:hidden flex gap-2 overflow-x-auto pb-2 custom-scroll"></div>
@@ -174,6 +201,31 @@
         let platforms = JSON.parse(localStorage.getItem('abcyara_platforms')) || defaultPlatforms;
         let currentViewDate = new Date();
 
+        // LOGIQUE IMPORT JSON
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (importedData && Array.isArray(importedData.tasks)) {
+                        appData = importedData;
+                        save();
+                        renderCalendar();
+                        alert("Données importées avec succès !");
+                    } else {
+                        alert("Format de fichier invalide. Le JSON doit contenir un tableau 'tasks'.");
+                    }
+                } catch (error) {
+                    alert("Erreur lors de la lecture du fichier JSON.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Réinitialise l'input
+        }
+
+        // LOGIQUE EXPORT JSON
         function exportJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
             const downloadAnchorNode = document.createElement('a');
@@ -184,6 +236,7 @@
             downloadAnchorNode.remove();
         }
 
+        // LOGIQUE EXPORT CSV
         function exportCSV() {
             let csvContent = "data:text/csv;charset=utf-8,ID;Date;Titre;YouTube;TikTok;Insta;FB;Pinterest\n";
             appData.tasks.forEach(t => {
@@ -208,7 +261,7 @@
 
         function renderStudioNav() {
             const html = platforms.map(p => `
-                <a href="${p.url}" target="_blank" class="bg-white border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:border-indigo-300 transition-all text-slate-600">
+                <a href="${p.url}" target="_blank" class="card-bg border px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:border-indigo-400 transition-all text-gray-300">
                     <i class="${p.icon}"></i> ${p.name}
                 </a>
             `).join('');
@@ -218,9 +271,9 @@
 
         function renderConfigLinks() {
             document.getElementById('config-links').innerHTML = platforms.map(p => `
-                <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <div class="flex items-center gap-2 item-bg p-2 rounded-xl border">
                     <div class="w-6 flex justify-center text-xs"><i class="${p.icon}"></i></div>
-                    <input type="text" value="${p.url}" onchange="updatePlatformUrl('${p.id}', this.value)" class="flex-1 bg-transparent text-[9px] outline-none border-b border-transparent focus:border-indigo-400 font-medium">
+                    <input type="text" value="${p.url}" onchange="updatePlatformUrl('${p.id}', this.value)" class="flex-1 bg-transparent text-[9px] outline-none border-b border-transparent focus:border-indigo-400 font-medium text-gray-300">
                 </div>
             `).join('');
         }
@@ -247,7 +300,7 @@
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const startOffset = firstDay === 0 ? 6 : firstDay - 1;
 
-            for (let i = 0; i < startOffset; i++) grid.innerHTML += `<div class="border-b border-r border-slate-100 bg-slate-50/50"></div>`;
+            for (let i = 0; i < startOffset; i++) grid.innerHTML += `<div class="border-b border-r border-[#333] bg-[#121212]"></div>`;
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -255,9 +308,9 @@
                 const dayTasks = appData.tasks.filter(t => t.date === dateStr);
                 
                 let tasksHtml = dayTasks.map(task => `
-                    <div class="mt-2 bg-white border border-slate-200 rounded-xl p-2 group relative cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all" onclick="openEditModal(${task.id})">
-                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="absolute -top-2 -right-2 bg-slate-800 text-white rounded-full w-4 h-4 text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">×</button>
-                        <div class="text-[9px] font-bold text-slate-800 truncate mb-2">${task.title}</div>
+                    <div class="mt-2 item-bg border rounded-xl p-2 group relative cursor-pointer hover:border-indigo-500 hover:shadow-lg transition-all" onclick="openEditModal(${task.id})">
+                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="absolute -top-2 -right-2 bg-red-600 hover:bg-red-500 text-white rounded-full w-4 h-4 text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">×</button>
+                        <div class="text-[9px] font-bold text-white truncate mb-2">${task.title}</div>
                         <div class="flex justify-between" onclick="event.stopPropagation()">
                             ${platforms.map(p => `
                                 <div class="flex flex-col items-center">
@@ -270,9 +323,9 @@
                 `).join('');
 
                 grid.innerHTML += `
-                    <div class="border-b border-r border-slate-100 min-h-[110px] p-2 flex flex-col bg-white ${isToday ? 'bg-indigo-50/30 ring-2 ring-inset ring-indigo-500/20' : ''}">
-                        <span class="text-[10px] font-black ${isToday ? 'bg-indigo-600 text-white w-5 h-5 flex items-center justify-center rounded-lg' : 'text-slate-300'}">${day}</span>
-                        <div class="flex-1 overflow-y-auto custom-scroll mt-1">${tasksHtml}</div>
+                    <div class="border-b border-r border-[#333] min-h-[110px] p-2 flex flex-col ${isToday ? 'bg-[#2A2A3A] ring-1 ring-inset ring-indigo-500' : 'bg-[#1E1E1E]'}">
+                        <span class="text-[10px] font-black ${isToday ? 'bg-indigo-600 text-white w-5 h-5 flex items-center justify-center rounded-lg' : 'text-gray-500'}">${day}</span>
+                        <div class="flex-1 overflow-y-auto custom-scroll mt-1 pr-1">${tasksHtml}</div>
                     </div>
                 `;
             }
@@ -308,7 +361,7 @@
             appData.tasks.push({ id: Date.now(), title: t.value, date: d.value, status: {yt:false, tt:false, ig:false, fb:false, pin:false} });
             save(); t.value = ''; renderCalendar();
         }
-        function deleteTask(id) { if(confirm('Supprimer ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); } }
+        function deleteTask(id) { if(confirm('Supprimer cette publication ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); } }
         function changeMonth(dir) { currentViewDate.setMonth(currentViewDate.getMonth() + dir); renderCalendar(); }
         function save() { localStorage.setItem('abcyara_v8', JSON.stringify(appData)); }
 
