@@ -64,13 +64,13 @@
             
             <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
                 <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
-                    <i class="fa-solid fa-plus-circle text-indigo-500"></i> Planifier une vidéo
+                    <i class="fa-solid fa-plus-circle text-indigo-500"></i> Planifier
                 </h2>
                 <div class="flex flex-col gap-3">
-                    <input type="text" id="new-video-title" placeholder="Titre (ex: Les Couleurs 🎨)" class="border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 outline-none transition-all">
+                    <input type="text" id="new-video-title" placeholder="Titre de la vidéo..." class="border border-slate-200 p-3 rounded-xl text-sm bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 outline-none transition-all">
                     <div class="flex gap-2">
                         <input type="date" id="new-video-date" class="border border-slate-200 p-3 rounded-xl text-sm flex-1 bg-slate-50 outline-none">
-                        <button onclick="addVideoTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-lg shadow-indigo-100 active:scale-95 transition-all">
+                        <button onclick="addVideoTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-lg active:scale-95 transition-all">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
@@ -79,36 +79,51 @@
 
             <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
                 <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
-                    <i class="fa-solid fa-gears text-indigo-500"></i> Configurer les Studios
+                    <i class="fa-solid fa-video text-orange-500"></i> Formats & Durées
                 </h2>
-                <div id="config-links" class="space-y-2">
+                <div class="grid grid-cols-1 gap-2 text-[10px]">
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-youtube text-red-600"></i> YouTube</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black">16:9 • 8-12 min</span>
                     </div>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-tiktok"></i> TikTok / Shorts</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black">9:16 • 15-60 sec</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-instagram text-pink-600"></i> Reels</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black">9:16 • 30-90 sec</span>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-slate-50 rounded-xl border border-slate-100">
+                        <span class="font-bold flex items-center gap-2"><i class="fa-brands fa-pinterest text-red-700"></i> Pinterest</span>
+                        <span class="bg-white px-2 py-1 rounded border text-slate-600 font-black">2:3 • 15-30 sec</span>
+                    </div>
+                </div>
             </section>
 
-            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200 overflow-hidden text-[11px]">
+            <section class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200">
                 <h2 class="text-sm font-black text-slate-700 mb-4 flex items-center gap-2 uppercase tracking-tighter">
-                    <i class="fa-solid fa-chart-line text-green-500"></i> Recommandations
+                    <i class="fa-solid fa-link text-indigo-500"></i> Liens Studios
                 </h2>
-                <div class="space-y-2">
-                    <div class="p-2 rounded-xl bg-red-50 border border-red-100 flex justify-between items-center">
-                        <span class="font-bold text-red-700">YouTube</span>
-                        <span class="font-black opacity-60 italic">16h - 19h</span>
-                    </div>
-                    <div class="p-2 rounded-xl bg-slate-100 border border-slate-200 flex justify-between items-center">
-                        <span class="font-bold text-slate-800">TikTok</span>
-                        <span class="font-black opacity-60 italic">12h-14h / 19h-22h</span>
-                    </div>
-                    <div class="p-2 rounded-xl bg-pink-50 border border-pink-100 flex justify-between items-center">
-                        <span class="font-bold text-pink-700">Instagram</span>
-                        <span class="font-black opacity-60 italic">13h-15h / 20h-22h</span>
-                    </div>
+                <div id="config-links" class="space-y-2"></div>
+            </section>
+
+            <section class="bg-indigo-900 rounded-3xl p-5 shadow-xl text-white overflow-hidden">
+                <h2 class="text-xs font-black mb-4 flex items-center gap-2 uppercase tracking-widest text-indigo-300">
+                    <i class="fa-solid fa-clock"></i> Heures de pointe
+                </h2>
+                <div class="space-y-2 text-[10px]">
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><span>YouTube</span> <strong>16h-19h</strong></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><span>TikTok</span> <strong>19h-22h</strong></div>
+                    <div class="flex justify-between border-b border-indigo-800 pb-1"><span>Insta</span> <strong>20h-22h</strong></div>
+                    <div class="flex justify-between"><span>FB / Pin</span> <strong>14h-16h</strong></div>
                 </div>
             </section>
         </aside>
 
         <section class="flex flex-col gap-4">
             <div class="flex justify-between items-center bg-white p-4 rounded-3xl shadow-sm border border-slate-200">
-                <h2 id="month-display" class="font-black text-slate-800 uppercase tracking-tighter text-xl leading-none">---</h2>
+                <h2 id="month-display" class="font-black text-slate-800 uppercase tracking-tighter text-xl">---</h2>
                 <div class="flex gap-2">
                     <button onclick="changeMonth(-1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-left"></i></button>
                     <button onclick="changeMonth(1)" class="w-10 h-10 flex items-center justify-center bg-slate-50 border border-slate-200 rounded-xl hover:bg-white transition-all"><i class="fa-solid fa-chevron-right"></i></button>
@@ -127,7 +142,6 @@
     </div>
 
     <script>
-        // Configuration initiale par défaut
         const defaultPlatforms = [
             { id: 'yt', name: 'YouTube', icon: 'fa-brands fa-youtube yt-icon', url: "https://studio.youtube.com" },
             { id: 'tt', name: 'TikTok', icon: 'fa-brands fa-tiktok tt-icon', url: "https://www.tiktok.com/creators/creator-portal/" },
@@ -136,15 +150,13 @@
             { id: 'pin', name: 'Pin', icon: 'fa-brands fa-pinterest pin-icon', url: "https://www.pinterest.com/business/hub/" }
         ];
 
-        // Chargement des données (V8 + Plateformes configurables)
         let appData = JSON.parse(localStorage.getItem('abcyara_v8')) || { tasks: [] };
         let platforms = JSON.parse(localStorage.getItem('abcyara_platforms')) || defaultPlatforms;
         let currentViewDate = new Date();
 
-        // Rendu des liens Studio (Barre de navigation)
         function renderStudioNav() {
             const html = platforms.map(p => `
-                <a href="${p.url}" target="_blank" class="bg-white border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:shadow-md hover:border-indigo-300 transition-all text-slate-600">
+                <a href="${p.url}" target="_blank" class="bg-white border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 text-[10px] font-black shadow-sm hover:border-indigo-300 transition-all text-slate-600">
                     <i class="${p.icon}"></i> ${p.name}
                 </a>
             `).join('');
@@ -152,16 +164,11 @@
             document.getElementById('studio-nav-mobile').innerHTML = html;
         }
 
-        // Rendu du formulaire de configuration des liens
         function renderConfigLinks() {
-            const container = document.getElementById('config-links');
-            container.innerHTML = platforms.map(p => `
+            document.getElementById('config-links').innerHTML = platforms.map(p => `
                 <div class="flex items-center gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100">
-                    <div class="w-8 flex justify-center text-sm"><i class="${p.icon}"></i></div>
-                    <input type="text" value="${p.url}" 
-                        onchange="updatePlatformUrl('${p.id}', this.value)"
-                        placeholder="Lien ${p.name}"
-                        class="flex-1 bg-transparent text-[10px] outline-none border-b border-transparent focus:border-indigo-400 font-medium">
+                    <div class="w-6 flex justify-center text-xs"><i class="${p.icon}"></i></div>
+                    <input type="text" value="${p.url}" onchange="updatePlatformUrl('${p.id}', this.value)" class="flex-1 bg-transparent text-[9px] outline-none border-b border-transparent focus:border-indigo-400 font-medium">
                 </div>
             `).join('');
         }
@@ -171,7 +178,7 @@
             if (plat) {
                 plat.url = newUrl;
                 localStorage.setItem('abcyara_platforms', JSON.stringify(platforms));
-                renderStudioNav(); // Mise à jour immédiate des liens cliquables
+                renderStudioNav();
             }
         }
 
@@ -188,9 +195,7 @@
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const startOffset = firstDay === 0 ? 6 : firstDay - 1;
 
-            for (let i = 0; i < startOffset; i++) {
-                grid.innerHTML += `<div class="border-b border-r border-slate-100 bg-slate-50/50"></div>`;
-            }
+            for (let i = 0; i < startOffset; i++) grid.innerHTML += `<div class="border-b border-r border-slate-100 bg-slate-50/50"></div>`;
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -199,13 +204,13 @@
                 
                 let tasksHtml = dayTasks.map(task => `
                     <div class="mt-2 bg-white border border-slate-200 rounded-xl p-2 group relative cursor-pointer hover:border-indigo-400 hover:shadow-md transition-all" onclick="openEditModal(${task.id})">
-                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="absolute -top-2 -right-2 bg-slate-800 text-white rounded-full w-5 h-5 text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg border border-white">×</button>
+                        <button onclick="event.stopPropagation(); deleteTask(${task.id})" class="absolute -top-2 -right-2 bg-slate-800 text-white rounded-full w-4 h-4 text-[8px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10">×</button>
                         <div class="text-[9px] font-bold text-slate-800 truncate mb-2">${task.title}</div>
                         <div class="flex justify-between" onclick="event.stopPropagation()">
                             ${platforms.map(p => `
                                 <div class="flex flex-col items-center">
                                     <input type="checkbox" id="c-${task.id}-${p.id}" class="social-checkbox" ${task.status[p.id] ? 'checked' : ''} onchange="toggleStatus(${task.id}, '${p.id}', this.checked)">
-                                    <label for="c-${task.id}-${p.id}" class="social-label text-[10px]"><i class="${p.icon}"></i></label>
+                                    <label for="c-${task.id}-${p.id}" class="social-label text-[9px]"><i class="${p.icon}"></i></label>
                                 </div>
                             `).join('')}
                         </div>
@@ -213,15 +218,14 @@
                 `).join('');
 
                 grid.innerHTML += `
-                    <div class="border-b border-r border-slate-100 min-h-[120px] p-2 flex flex-col bg-white ${isToday ? 'ring-2 ring-inset ring-indigo-500/20 bg-indigo-50/30' : ''}">
-                        <span class="text-[11px] font-black ${isToday ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-lg shadow-lg' : 'text-slate-300'}">${day}</span>
+                    <div class="border-b border-r border-slate-100 min-h-[110px] p-2 flex flex-col bg-white ${isToday ? 'bg-indigo-50/30 ring-2 ring-inset ring-indigo-500/20' : ''}">
+                        <span class="text-[10px] font-black ${isToday ? 'bg-indigo-600 text-white w-5 h-5 flex items-center justify-center rounded-lg' : 'text-slate-300'}">${day}</span>
                         <div class="flex-1 overflow-y-auto custom-scroll mt-1">${tasksHtml}</div>
                     </div>
                 `;
             }
         }
 
-        // Fonctions de gestion des tâches
         function openEditModal(taskId) {
             const task = appData.tasks.find(t => t.id === taskId);
             if (task) {
@@ -252,17 +256,14 @@
             appData.tasks.push({ id: Date.now(), title: t.value, date: d.value, status: {yt:false, tt:false, ig:false, fb:false, pin:false} });
             save(); t.value = ''; renderCalendar();
         }
-        function deleteTask(id) {
-            if(confirm('Supprimer ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); }
-        }
+        function deleteTask(id) { if(confirm('Supprimer ?')) { appData.tasks = appData.tasks.filter(t => t.id !== id); save(); renderCalendar(); } }
         function changeMonth(dir) { currentViewDate.setMonth(currentViewDate.getMonth() + dir); renderCalendar(); }
         function save() { localStorage.setItem('abcyara_v8', JSON.stringify(appData)); }
 
-        // Initialisation
         document.getElementById('new-video-date').valueAsDate = new Date();
         renderStudioNav();
         renderConfigLinks();
         renderCalendar();
     </script>
 </body>
-</html> 
+</html>
